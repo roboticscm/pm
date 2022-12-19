@@ -4,6 +4,12 @@
     export let name;
     export let placeholder;
     export let readonly;
+
+    let ref;
+    export const myFocus = () => ref && ref.focus();
+
+    export const getRef  = () => ref;
+
 </script>
 
 <div class="input-wrapper">
@@ -12,7 +18,7 @@
             {label}
         </label>
     {/if}
-    <input class="input" type="text" bind:value {placeholder} {readonly} on:input on:keyup/>
+    <input bind:this={ref} {name} class="input" type="text" bind:value {placeholder} {readonly} on:input on:keyup/>
 </div>
 
 <style>

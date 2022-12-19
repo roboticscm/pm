@@ -42,18 +42,68 @@
   width: 100%;
 }
 
+.modal.svelte-446w1e {
+  opacity: .99;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: #575656;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  position: fixed;
+}
+
+.form.svelte-446w1e {
+  width: 50%;
+  height: -moz-fit-content;
+  height: fit-content;
+  background: wheat;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 12px;
+  margin: 0 auto;
+  padding: 12px;
+  display: flex;
+}
+
+.form-content.svelte-446w1e {
+  flex-direction: column;
+  row-gap: 18px;
+  display: flex;
+}
+
+.button-list.svelte-446w1e {
+  justify-content: center;
+  column-gap: 12px;
+  display: flex;
+}
+
 .button.svelte-18ve44u {
   border-radius: 8px;
   padding: 4px 12px;
 }
 
-.card.svelte-64cz9n {
+.card.svelte-d4nbbg {
   min-width: 250px;
   background: #eeecec;
   border: 1px solid gray;
   border-radius: 10px;
   flex: 1;
   padding: 12px;
+  position: relative;
+}
+
+.floating.svelte-d4nbbg {
+  background: #e7edc4;
+  flex-direction: column;
+  row-gap: 4px;
+  padding: 6px;
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .list.svelte-1r026r1.svelte-1r026r1 {

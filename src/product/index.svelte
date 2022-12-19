@@ -4,30 +4,87 @@
     import InputText from '/src/components/input-text/index.svelte';
     import InputNumber from '/src/components/input-number/index.svelte';
     import Button from '/src/components/button/index.svelte';
+    import { onMount, onDestroy } from 'svelte';
+    import { generateUUID } from '/src/lib/generate.js';
+    import { fromEvent } from 'rxjs';
+    import { debounceTime, switchMap, map, tap } from 'rxjs/operators';
+
 
     const store = new Store();
     let listView = true;
+    let nameRef, filterRef;
+    let form = {};
 
     store.find();
     const { productList$ } = store;
 
-    const onSave = () => {
+    $: filterProductList = $productList$;
 
+    const onSave = () => {
+        productList$.next([form, ...$productList$]);
+        reset();
     }
+
+    const onDelete = (e) => {
+        const deleteId = e.detail;
+        productList$.next($productList$.filter((it) => it.id != deleteId))
+    }
+
+    const reset = () => {
+        nameRef.myFocus();
+        form = {
+            id: generateUUID(),
+        }
+    }
+
+    onMount(() => {
+        reset();
+        const subscription = fromEvent(filterRef.getRef(), 'keyup').pipe(
+            debounceTime(500),
+            map(event => event.target.value.toLowerCase()),
+            switchMap(filterText => filter(filterText))
+        ).subscribe((res) => {
+            filterProductList = res
+        });
+
+        return ()=> {
+            subscription.unsubscribe();
+        }
+    })
+
+    onDestroy(() => {
+        console.log('onDestroy standalone')
+    })
+
+
+    const onFilter = async (e) => {
+        // const filterText = e.target.value.toLowerCase();
+        // filterProductList = await filter(filterText)
+    }
+
+    const filter = (filterText) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                console.log('Server search')
+                resolve($productList$.filter((it) => (it.name||'').toLowerCase().includes(filterText)));
+            }, 300)
+        })
+    }
+
 </script>
 
 <main class="main">
     <div class="form">
-        <InputText label="ID" name="id" readonly={true}></InputText>
-        <InputText label="Name" name="name" placeholder="Enter product name"></InputText>
-        <InputNumber label="Price" name="price" placeholder="Enter product price"></InputNumber>
+        <InputText value={form.id} label="ID" name="id" readonly={true}></InputText>
+        <InputText bind:value={form.name} bind:this={nameRef} label="Name" name="name" placeholder="Enter product name"></InputText>
+        <InputNumber bind:value={form.price} label="Price" name="price" placeholder="Enter product price"></InputNumber>
     </div>
     <Button label="Save" on:click={onSave}></Button>
     <div class="filter-wrapper">
-        <InputText placeholder="Filter text"></InputText>
+        <InputText bind:this={filterRef} on:input={onFilter} placeholder="Filter text"></InputText>
         <Button style="width: 80px;" label="{listView ? 'Table' : 'List'}" on:click={()=>listView=!listView}></Button>
     </div>
-    <ProductList {listView} data={$productList$}></ProductList> 
+    <ProductList on:delete={onDelete} {listView} data={filterProductList}></ProductList> 
 </main>
 
 <style>

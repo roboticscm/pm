@@ -2814,6 +2814,10 @@ var _indexSvelte2 = require("/src/components/input-number/index.svelte");
 var _indexSvelteDefault2 = parcelHelpers.interopDefault(_indexSvelte2);
 var _indexSvelte3 = require("/src/components/button/index.svelte");
 var _indexSvelteDefault3 = parcelHelpers.interopDefault(_indexSvelte3);
+var _svelte = require("svelte");
+var _generateJs = require("/src/lib/generate.js");
+var _rxjs = require("rxjs");
+var _operators = require("rxjs/operators");
 function add_css(target) {
     (0, _internal.append_styles)(target, "svelte-1brq9sg", ".main.svelte-1brq9sg{margin:0 auto;width:50%;display:flex;flex-direction:column;align-items:center;row-gap:24px}.form.svelte-1brq9sg{width:100%;display:flex;column-gap:24px}.filter-wrapper.svelte-1brq9sg{width:100%;display:flex;align-items:center;column-gap:12px}");
 }
@@ -2823,8 +2827,10 @@ function create_fragment(ctx) {
     let inputtext0;
     let t0;
     let inputtext1;
+    let updating_value;
     let t1;
     let inputnumber;
+    let updating_value_1;
     let t2;
     let button0;
     let t3;
@@ -2837,49 +2843,67 @@ function create_fragment(ctx) {
     let current;
     inputtext0 = new (0, _indexSvelteDefault1.default)({
         props: {
+            value: /*form*/ ctx[3].id,
             label: "ID",
             name: "id",
             readonly: true
         }
     });
+    function inputtext1_value_binding(value) {
+        /*inputtext1_value_binding*/ ctx[10](value);
+    }
+    let inputtext1_props = {
+        label: "Name",
+        name: "name",
+        placeholder: "Enter product name"
+    };
+    if (/*form*/ ctx[3].name !== void 0) inputtext1_props.value = /*form*/ ctx[3].name;
     inputtext1 = new (0, _indexSvelteDefault1.default)({
-        props: {
-            label: "Name",
-            name: "name",
-            placeholder: "Enter product name"
-        }
+        props: inputtext1_props
     });
+    (0, _internal.binding_callbacks).push(()=>(0, _internal.bind)(inputtext1, "value", inputtext1_value_binding, /*form*/ ctx[3].name));
+    /*inputtext1_binding*/ ctx[11](inputtext1);
+    function inputnumber_value_binding(value) {
+        /*inputnumber_value_binding*/ ctx[12](value);
+    }
+    let inputnumber_props = {
+        label: "Price",
+        name: "price",
+        placeholder: "Enter product price"
+    };
+    if (/*form*/ ctx[3].price !== void 0) inputnumber_props.value = /*form*/ ctx[3].price;
     inputnumber = new (0, _indexSvelteDefault2.default)({
-        props: {
-            label: "Price",
-            name: "price",
-            placeholder: "Enter product price"
-        }
+        props: inputnumber_props
     });
+    (0, _internal.binding_callbacks).push(()=>(0, _internal.bind)(inputnumber, "value", inputnumber_value_binding, /*form*/ ctx[3].price));
     button0 = new (0, _indexSvelteDefault3.default)({
         props: {
             label: "Save"
         }
     });
-    button0.$on("click", /*onSave*/ ctx[3]);
+    button0.$on("click", /*onSave*/ ctx[6]);
+    let inputtext2_props = {
+        placeholder: "Filter text"
+    };
     inputtext2 = new (0, _indexSvelteDefault1.default)({
-        props: {
-            placeholder: "Filter text"
-        }
+        props: inputtext2_props
     });
+    /*inputtext2_binding*/ ctx[13](inputtext2);
+    inputtext2.$on("input", /*onFilter*/ ctx[8]);
     button1 = new (0, _indexSvelteDefault3.default)({
         props: {
             style: "width: 80px;",
             label: /*listView*/ ctx[0] ? "Table" : "List"
         }
     });
-    button1.$on("click", /*click_handler*/ ctx[4]);
+    button1.$on("click", /*click_handler*/ ctx[14]);
     productlist = new (0, _indexSvelteDefault.default)({
         props: {
             listView: /*listView*/ ctx[0],
-            data: /*$productList$*/ ctx[1]
+            data: /*filterProductList*/ ctx[4]
         }
     });
+    productlist.$on("delete", /*onDelete*/ ctx[7]);
     return {
         c () {
             main = (0, _internal.element)("main");
@@ -2922,12 +2946,31 @@ function create_fragment(ctx) {
             current = true;
         },
         p (ctx, [dirty]) {
+            const inputtext0_changes = {};
+            if (dirty & /*form*/ 8) inputtext0_changes.value = /*form*/ ctx[3].id;
+            inputtext0.$set(inputtext0_changes);
+            const inputtext1_changes = {};
+            if (!updating_value && dirty & /*form*/ 8) {
+                updating_value = true;
+                inputtext1_changes.value = /*form*/ ctx[3].name;
+                (0, _internal.add_flush_callback)(()=>updating_value = false);
+            }
+            inputtext1.$set(inputtext1_changes);
+            const inputnumber_changes = {};
+            if (!updating_value_1 && dirty & /*form*/ 8) {
+                updating_value_1 = true;
+                inputnumber_changes.value = /*form*/ ctx[3].price;
+                (0, _internal.add_flush_callback)(()=>updating_value_1 = false);
+            }
+            inputnumber.$set(inputnumber_changes);
+            const inputtext2_changes = {};
+            inputtext2.$set(inputtext2_changes);
             const button1_changes = {};
             if (dirty & /*listView*/ 1) button1_changes.label = /*listView*/ ctx[0] ? "Table" : "List";
             button1.$set(button1_changes);
             const productlist_changes = {};
             if (dirty & /*listView*/ 1) productlist_changes.listView = /*listView*/ ctx[0];
-            if (dirty & /*$productList$*/ 2) productlist_changes.data = /*$productList$*/ ctx[1];
+            if (dirty & /*filterProductList*/ 16) productlist_changes.data = /*filterProductList*/ ctx[4];
             productlist.$set(productlist_changes);
         },
         i (local) {
@@ -2954,9 +2997,11 @@ function create_fragment(ctx) {
         d (detaching) {
             if (detaching) (0, _internal.detach)(main);
             (0, _internal.destroy_component)(inputtext0);
+            /*inputtext1_binding*/ ctx[11](null);
             (0, _internal.destroy_component)(inputtext1);
             (0, _internal.destroy_component)(inputnumber);
             (0, _internal.destroy_component)(button0);
+            /*inputtext2_binding*/ ctx[13](null);
             (0, _internal.destroy_component)(inputtext2);
             (0, _internal.destroy_component)(button1);
             (0, _internal.destroy_component)(productlist);
@@ -2964,19 +3009,97 @@ function create_fragment(ctx) {
     };
 }
 function instance($$self, $$props, $$invalidate) {
+    let filterProductList;
     let $productList$;
     const store = new (0, _store.Store)();
     let listView = true;
+    let nameRef, filterRef;
+    let form = {};
     store.find();
     const { productList$  } = store;
-    (0, _internal.component_subscribe)($$self, productList$, (value)=>$$invalidate(1, $productList$ = value));
-    const onSave = ()=>{};
+    (0, _internal.component_subscribe)($$self, productList$, (value)=>$$invalidate(9, $productList$ = value));
+    const onSave = ()=>{
+        productList$.next([
+            form,
+            ...$productList$
+        ]);
+        reset();
+    };
+    const onDelete = (e)=>{
+        const deleteId = e.detail;
+        productList$.next($productList$.filter((it)=>it.id != deleteId));
+    };
+    const reset = ()=>{
+        nameRef.myFocus();
+        $$invalidate(3, form = {
+            id: (0, _generateJs.generateUUID)()
+        });
+    };
+    (0, _svelte.onMount)(()=>{
+        reset();
+        const subscription = (0, _rxjs.fromEvent)(filterRef.getRef(), "keyup").pipe((0, _operators.debounceTime)(500), (0, _operators.map)((event)=>event.target.value.toLowerCase()), (0, _operators.switchMap)((filterText)=>filter(filterText))).subscribe((res)=>{
+            $$invalidate(4, filterProductList = res);
+        });
+        return ()=>{
+            subscription.unsubscribe();
+        };
+    });
+    (0, _svelte.onDestroy)(()=>{
+        console.log("onDestroy standalone");
+    });
+    const onFilter = async (e)=>{}; // const filterText = e.target.value.toLowerCase();
+    // filterProductList = await filter(filterText)
+    const filter = (filterText)=>{
+        return new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                console.log("Server search");
+                resolve($productList$.filter((it)=>(it.name || "").toLowerCase().includes(filterText)));
+            }, 300);
+        });
+    };
+    function inputtext1_value_binding(value) {
+        if ($$self.$$.not_equal(form.name, value)) {
+            form.name = value;
+            $$invalidate(3, form);
+        }
+    }
+    function inputtext1_binding($$value) {
+        (0, _internal.binding_callbacks)[$$value ? "unshift" : "push"](()=>{
+            nameRef = $$value;
+            $$invalidate(1, nameRef);
+        });
+    }
+    function inputnumber_value_binding(value) {
+        if ($$self.$$.not_equal(form.price, value)) {
+            form.price = value;
+            $$invalidate(3, form);
+        }
+    }
+    function inputtext2_binding($$value) {
+        (0, _internal.binding_callbacks)[$$value ? "unshift" : "push"](()=>{
+            filterRef = $$value;
+            $$invalidate(2, filterRef);
+        });
+    }
     const click_handler = ()=>$$invalidate(0, listView = !listView);
+    $$self.$$.update = ()=>{
+        if ($$self.$$.dirty & /*$productList$*/ 512) $: $$invalidate(4, filterProductList = $productList$);
+    };
     return [
         listView,
-        $productList$,
+        nameRef,
+        filterRef,
+        form,
+        filterProductList,
         productList$,
         onSave,
+        onDelete,
+        onFilter,
+        $productList$,
+        inputtext1_value_binding,
+        inputtext1_binding,
+        inputnumber_value_binding,
+        inputtext2_binding,
         click_handler
     ];
 }
@@ -2988,7 +3111,7 @@ class Index extends (0, _internal.SvelteComponent) {
 }
 exports.default = Index;
 
-},{"svelte/internal":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./store":"htBxJ","./product-list/index.svelte":"iNVWd","/src/components/input-text/index.svelte":"GM91j","/src/components/input-number/index.svelte":"jhbPA","/src/components/button/index.svelte":"3KtfU"}],"htBxJ":[function(require,module,exports) {
+},{"svelte/internal":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./store":"htBxJ","./product-list/index.svelte":"iNVWd","/src/components/input-text/index.svelte":"GM91j","/src/components/input-number/index.svelte":"jhbPA","/src/components/button/index.svelte":"3KtfU","svelte":"4r74h","/src/lib/generate.js":"4fXck","rxjs":"lLy7s","rxjs/operators":"hLs7d"}],"htBxJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Store", ()=>Store);
@@ -3345,7 +3468,7 @@ var _withLatestFrom = require("./internal/operators/withLatestFrom");
 var _zipAll = require("./internal/operators/zipAll");
 var _zipWith = require("./internal/operators/zipWith");
 
-},{"./internal/Observable":"4Jvxr","./internal/observable/ConnectableObservable":false,"./internal/symbol/observable":"byHtV","./internal/observable/dom/animationFrames":false,"./internal/Subject":"94RSe","./internal/BehaviorSubject":"4s6yS","./internal/ReplaySubject":false,"./internal/AsyncSubject":false,"./internal/scheduler/asap":false,"./internal/scheduler/async":false,"./internal/scheduler/queue":false,"./internal/scheduler/animationFrame":false,"./internal/scheduler/VirtualTimeScheduler":false,"./internal/Scheduler":false,"./internal/Subscription":"lFyhg","./internal/Subscriber":"1VFFQ","./internal/Notification":false,"./internal/util/pipe":"1GN6U","./internal/util/noop":"l8uEm","./internal/util/identity":"8Xfg6","./internal/util/isObservable":false,"./internal/lastValueFrom":false,"./internal/firstValueFrom":false,"./internal/util/ArgumentOutOfRangeError":false,"./internal/util/EmptyError":false,"./internal/util/NotFoundError":false,"./internal/util/ObjectUnsubscribedError":"6Gcwa","./internal/util/SequenceError":false,"./internal/operators/timeout":false,"./internal/util/UnsubscriptionError":"GSF7Z","./internal/observable/bindCallback":false,"./internal/observable/bindNodeCallback":false,"./internal/observable/combineLatest":false,"./internal/observable/concat":false,"./internal/observable/connectable":false,"./internal/observable/defer":false,"./internal/observable/empty":false,"./internal/observable/forkJoin":false,"./internal/observable/from":false,"./internal/observable/fromEvent":false,"./internal/observable/fromEventPattern":false,"./internal/observable/generate":false,"./internal/observable/iif":false,"./internal/observable/interval":false,"./internal/observable/merge":false,"./internal/observable/never":false,"./internal/observable/of":false,"./internal/observable/onErrorResumeNext":false,"./internal/observable/pairs":false,"./internal/observable/partition":false,"./internal/observable/race":false,"./internal/observable/range":false,"./internal/observable/throwError":false,"./internal/observable/timer":false,"./internal/observable/using":false,"./internal/observable/zip":false,"./internal/scheduled/scheduled":false,"./internal/types":"c58fk","./internal/config":"fX0gC","./internal/operators/audit":false,"./internal/operators/auditTime":false,"./internal/operators/buffer":false,"./internal/operators/bufferCount":false,"./internal/operators/bufferTime":false,"./internal/operators/bufferToggle":false,"./internal/operators/bufferWhen":false,"./internal/operators/catchError":false,"./internal/operators/combineAll":false,"./internal/operators/combineLatestAll":false,"./internal/operators/combineLatestWith":false,"./internal/operators/concatAll":false,"./internal/operators/concatMap":false,"./internal/operators/concatMapTo":false,"./internal/operators/concatWith":false,"./internal/operators/connect":false,"./internal/operators/count":false,"./internal/operators/debounce":false,"./internal/operators/debounceTime":false,"./internal/operators/defaultIfEmpty":false,"./internal/operators/delay":false,"./internal/operators/delayWhen":false,"./internal/operators/dematerialize":false,"./internal/operators/distinct":false,"./internal/operators/distinctUntilChanged":false,"./internal/operators/distinctUntilKeyChanged":false,"./internal/operators/elementAt":false,"./internal/operators/endWith":false,"./internal/operators/every":false,"./internal/operators/exhaust":false,"./internal/operators/exhaustAll":false,"./internal/operators/exhaustMap":false,"./internal/operators/expand":false,"./internal/operators/filter":false,"./internal/operators/finalize":false,"./internal/operators/find":false,"./internal/operators/findIndex":false,"./internal/operators/first":false,"./internal/operators/groupBy":false,"./internal/operators/ignoreElements":false,"./internal/operators/isEmpty":false,"./internal/operators/last":false,"./internal/operators/map":false,"./internal/operators/mapTo":false,"./internal/operators/materialize":false,"./internal/operators/max":false,"./internal/operators/mergeAll":false,"./internal/operators/flatMap":false,"./internal/operators/mergeMap":false,"./internal/operators/mergeMapTo":false,"./internal/operators/mergeScan":false,"./internal/operators/mergeWith":false,"./internal/operators/min":false,"./internal/operators/multicast":false,"./internal/operators/observeOn":false,"./internal/operators/onErrorResumeNextWith":false,"./internal/operators/pairwise":false,"./internal/operators/pluck":false,"./internal/operators/publish":false,"./internal/operators/publishBehavior":false,"./internal/operators/publishLast":false,"./internal/operators/publishReplay":false,"./internal/operators/raceWith":false,"./internal/operators/reduce":false,"./internal/operators/repeat":false,"./internal/operators/repeatWhen":false,"./internal/operators/retry":false,"./internal/operators/retryWhen":false,"./internal/operators/refCount":false,"./internal/operators/sample":false,"./internal/operators/sampleTime":false,"./internal/operators/scan":false,"./internal/operators/sequenceEqual":false,"./internal/operators/share":false,"./internal/operators/shareReplay":false,"./internal/operators/single":false,"./internal/operators/skip":false,"./internal/operators/skipLast":false,"./internal/operators/skipUntil":false,"./internal/operators/skipWhile":false,"./internal/operators/startWith":false,"./internal/operators/subscribeOn":false,"./internal/operators/switchAll":false,"./internal/operators/switchMap":false,"./internal/operators/switchMapTo":false,"./internal/operators/switchScan":false,"./internal/operators/take":false,"./internal/operators/takeLast":false,"./internal/operators/takeUntil":false,"./internal/operators/takeWhile":false,"./internal/operators/tap":false,"./internal/operators/throttle":false,"./internal/operators/throttleTime":false,"./internal/operators/throwIfEmpty":false,"./internal/operators/timeInterval":false,"./internal/operators/timeoutWith":false,"./internal/operators/timestamp":false,"./internal/operators/toArray":false,"./internal/operators/window":false,"./internal/operators/windowCount":false,"./internal/operators/windowTime":false,"./internal/operators/windowToggle":false,"./internal/operators/windowWhen":false,"./internal/operators/withLatestFrom":false,"./internal/operators/zipAll":false,"./internal/operators/zipWith":false,"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4Jvxr":[function(require,module,exports) {
+},{"./internal/Observable":"4Jvxr","./internal/observable/ConnectableObservable":false,"./internal/symbol/observable":"byHtV","./internal/observable/dom/animationFrames":false,"./internal/Subject":"94RSe","./internal/BehaviorSubject":"4s6yS","./internal/ReplaySubject":false,"./internal/AsyncSubject":false,"./internal/scheduler/asap":false,"./internal/scheduler/async":"bKyC1","./internal/scheduler/queue":false,"./internal/scheduler/animationFrame":false,"./internal/scheduler/VirtualTimeScheduler":false,"./internal/Scheduler":"90yvc","./internal/Subscription":"lFyhg","./internal/Subscriber":"1VFFQ","./internal/Notification":false,"./internal/util/pipe":"1GN6U","./internal/util/noop":"l8uEm","./internal/util/identity":"8Xfg6","./internal/util/isObservable":false,"./internal/lastValueFrom":false,"./internal/firstValueFrom":false,"./internal/util/ArgumentOutOfRangeError":false,"./internal/util/EmptyError":false,"./internal/util/NotFoundError":false,"./internal/util/ObjectUnsubscribedError":"6Gcwa","./internal/util/SequenceError":false,"./internal/operators/timeout":false,"./internal/util/UnsubscriptionError":"GSF7Z","./internal/observable/bindCallback":false,"./internal/observable/bindNodeCallback":false,"./internal/observable/combineLatest":false,"./internal/observable/concat":false,"./internal/observable/connectable":false,"./internal/observable/defer":false,"./internal/observable/empty":false,"./internal/observable/forkJoin":false,"./internal/observable/from":false,"./internal/observable/fromEvent":"eTJLc","./internal/observable/fromEventPattern":false,"./internal/observable/generate":false,"./internal/observable/iif":false,"./internal/observable/interval":false,"./internal/observable/merge":false,"./internal/observable/never":false,"./internal/observable/of":false,"./internal/observable/onErrorResumeNext":false,"./internal/observable/pairs":false,"./internal/observable/partition":false,"./internal/observable/race":false,"./internal/observable/range":false,"./internal/observable/throwError":false,"./internal/observable/timer":false,"./internal/observable/using":false,"./internal/observable/zip":false,"./internal/scheduled/scheduled":false,"./internal/types":"c58fk","./internal/config":"fX0gC","./internal/operators/audit":false,"./internal/operators/auditTime":false,"./internal/operators/buffer":false,"./internal/operators/bufferCount":false,"./internal/operators/bufferTime":false,"./internal/operators/bufferToggle":false,"./internal/operators/bufferWhen":false,"./internal/operators/catchError":false,"./internal/operators/combineAll":false,"./internal/operators/combineLatestAll":false,"./internal/operators/combineLatestWith":false,"./internal/operators/concatAll":false,"./internal/operators/concatMap":false,"./internal/operators/concatMapTo":false,"./internal/operators/concatWith":false,"./internal/operators/connect":false,"./internal/operators/count":false,"./internal/operators/debounce":false,"./internal/operators/debounceTime":"kQLcN","./internal/operators/defaultIfEmpty":false,"./internal/operators/delay":false,"./internal/operators/delayWhen":false,"./internal/operators/dematerialize":false,"./internal/operators/distinct":false,"./internal/operators/distinctUntilChanged":false,"./internal/operators/distinctUntilKeyChanged":false,"./internal/operators/elementAt":false,"./internal/operators/endWith":false,"./internal/operators/every":false,"./internal/operators/exhaust":false,"./internal/operators/exhaustAll":false,"./internal/operators/exhaustMap":false,"./internal/operators/expand":false,"./internal/operators/filter":false,"./internal/operators/finalize":false,"./internal/operators/find":false,"./internal/operators/findIndex":false,"./internal/operators/first":false,"./internal/operators/groupBy":false,"./internal/operators/ignoreElements":false,"./internal/operators/isEmpty":false,"./internal/operators/last":false,"./internal/operators/map":"25iUP","./internal/operators/mapTo":false,"./internal/operators/materialize":false,"./internal/operators/max":false,"./internal/operators/mergeAll":false,"./internal/operators/flatMap":false,"./internal/operators/mergeMap":"1Kzmb","./internal/operators/mergeMapTo":false,"./internal/operators/mergeScan":false,"./internal/operators/mergeWith":false,"./internal/operators/min":false,"./internal/operators/multicast":false,"./internal/operators/observeOn":false,"./internal/operators/onErrorResumeNextWith":false,"./internal/operators/pairwise":false,"./internal/operators/pluck":false,"./internal/operators/publish":false,"./internal/operators/publishBehavior":false,"./internal/operators/publishLast":false,"./internal/operators/publishReplay":false,"./internal/operators/raceWith":false,"./internal/operators/reduce":false,"./internal/operators/repeat":false,"./internal/operators/repeatWhen":false,"./internal/operators/retry":false,"./internal/operators/retryWhen":false,"./internal/operators/refCount":false,"./internal/operators/sample":false,"./internal/operators/sampleTime":false,"./internal/operators/scan":false,"./internal/operators/sequenceEqual":false,"./internal/operators/share":false,"./internal/operators/shareReplay":false,"./internal/operators/single":false,"./internal/operators/skip":false,"./internal/operators/skipLast":false,"./internal/operators/skipUntil":false,"./internal/operators/skipWhile":false,"./internal/operators/startWith":false,"./internal/operators/subscribeOn":false,"./internal/operators/switchAll":false,"./internal/operators/switchMap":"jbzg2","./internal/operators/switchMapTo":false,"./internal/operators/switchScan":false,"./internal/operators/take":false,"./internal/operators/takeLast":false,"./internal/operators/takeUntil":false,"./internal/operators/takeWhile":false,"./internal/operators/tap":"dVdZH","./internal/operators/throttle":false,"./internal/operators/throttleTime":false,"./internal/operators/throwIfEmpty":false,"./internal/operators/timeInterval":false,"./internal/operators/timeoutWith":false,"./internal/operators/timestamp":false,"./internal/operators/toArray":false,"./internal/operators/window":false,"./internal/operators/windowCount":false,"./internal/operators/windowTime":false,"./internal/operators/windowToggle":false,"./internal/operators/windowWhen":false,"./internal/operators/withLatestFrom":false,"./internal/operators/zipAll":false,"./internal/operators/zipWith":false,"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4Jvxr":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Observable", ()=>Observable);
@@ -4537,35 +4660,950 @@ var BehaviorSubject = function(_super) {
     return BehaviorSubject;
 }((0, _subject.Subject));
 
-},{"tslib":"lRdW5","./Subject":"94RSe","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"c58fk":[function(require,module,exports) {
+},{"tslib":"lRdW5","./Subject":"94RSe","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bKyC1":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "asyncScheduler", ()=>asyncScheduler);
+parcelHelpers.export(exports, "async", ()=>async);
+var _asyncAction = require("./AsyncAction");
+var _asyncScheduler = require("./AsyncScheduler");
+var asyncScheduler = new (0, _asyncScheduler.AsyncScheduler)((0, _asyncAction.AsyncAction));
+var async = asyncScheduler;
+
+},{"./AsyncAction":"26t3B","./AsyncScheduler":"c1rfP","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"26t3B":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "AsyncAction", ()=>AsyncAction);
+var _tslib = require("tslib");
+var _action = require("./Action");
+var _intervalProvider = require("./intervalProvider");
+var _arrRemove = require("../util/arrRemove");
+var AsyncAction = function(_super) {
+    (0, _tslib.__extends)(AsyncAction, _super);
+    function AsyncAction(scheduler, work) {
+        var _this = _super.call(this, scheduler, work) || this;
+        _this.scheduler = scheduler;
+        _this.work = work;
+        _this.pending = false;
+        return _this;
+    }
+    AsyncAction.prototype.schedule = function(state, delay) {
+        var _a;
+        if (delay === void 0) delay = 0;
+        if (this.closed) return this;
+        this.state = state;
+        var id = this.id;
+        var scheduler = this.scheduler;
+        if (id != null) this.id = this.recycleAsyncId(scheduler, id, delay);
+        this.pending = true;
+        this.delay = delay;
+        this.id = (_a = this.id) !== null && _a !== void 0 ? _a : this.requestAsyncId(scheduler, this.id, delay);
+        return this;
+    };
+    AsyncAction.prototype.requestAsyncId = function(scheduler, _id, delay) {
+        if (delay === void 0) delay = 0;
+        return (0, _intervalProvider.intervalProvider).setInterval(scheduler.flush.bind(scheduler, this), delay);
+    };
+    AsyncAction.prototype.recycleAsyncId = function(_scheduler, id, delay) {
+        if (delay === void 0) delay = 0;
+        if (delay != null && this.delay === delay && this.pending === false) return id;
+        if (id != null) (0, _intervalProvider.intervalProvider).clearInterval(id);
+        return undefined;
+    };
+    AsyncAction.prototype.execute = function(state, delay) {
+        if (this.closed) return new Error("executing a cancelled action");
+        this.pending = false;
+        var error = this._execute(state, delay);
+        if (error) return error;
+        else if (this.pending === false && this.id != null) this.id = this.recycleAsyncId(this.scheduler, this.id, null);
+    };
+    AsyncAction.prototype._execute = function(state, _delay) {
+        var errored = false;
+        var errorValue;
+        try {
+            this.work(state);
+        } catch (e) {
+            errored = true;
+            errorValue = e ? e : new Error("Scheduled action threw falsy error");
+        }
+        if (errored) {
+            this.unsubscribe();
+            return errorValue;
+        }
+    };
+    AsyncAction.prototype.unsubscribe = function() {
+        if (!this.closed) {
+            var _a = this, id = _a.id, scheduler = _a.scheduler;
+            var actions = scheduler.actions;
+            this.work = this.state = this.scheduler = null;
+            this.pending = false;
+            (0, _arrRemove.arrRemove)(actions, this);
+            if (id != null) this.id = this.recycleAsyncId(scheduler, id, null);
+            this.delay = null;
+            _super.prototype.unsubscribe.call(this);
+        }
+    };
+    return AsyncAction;
+}((0, _action.Action));
+
+},{"tslib":"lRdW5","./Action":"iPCnX","./intervalProvider":"1Kd8E","../util/arrRemove":"dLHeW","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"iPCnX":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Action", ()=>Action);
+var _tslib = require("tslib");
+var _subscription = require("../Subscription");
+var Action = function(_super) {
+    (0, _tslib.__extends)(Action, _super);
+    function Action(scheduler, work) {
+        return _super.call(this) || this;
+    }
+    Action.prototype.schedule = function(state, delay) {
+        if (delay === void 0) delay = 0;
+        return this;
+    };
+    return Action;
+}((0, _subscription.Subscription));
+
+},{"tslib":"lRdW5","../Subscription":"lFyhg","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1Kd8E":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "intervalProvider", ()=>intervalProvider);
+var _tslib = require("tslib");
+var intervalProvider = {
+    setInterval: function(handler, timeout) {
+        var args = [];
+        for(var _i = 2; _i < arguments.length; _i++)args[_i - 2] = arguments[_i];
+        var delegate = intervalProvider.delegate;
+        if (delegate === null || delegate === void 0 ? void 0 : delegate.setInterval) return delegate.setInterval.apply(delegate, (0, _tslib.__spreadArray)([
+            handler,
+            timeout
+        ], (0, _tslib.__read)(args)));
+        return setInterval.apply(void 0, (0, _tslib.__spreadArray)([
+            handler,
+            timeout
+        ], (0, _tslib.__read)(args)));
+    },
+    clearInterval: function(handle) {
+        var delegate = intervalProvider.delegate;
+        return ((delegate === null || delegate === void 0 ? void 0 : delegate.clearInterval) || clearInterval)(handle);
+    },
+    delegate: undefined
+};
+
+},{"tslib":"lRdW5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"c1rfP":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "AsyncScheduler", ()=>AsyncScheduler);
+var _tslib = require("tslib");
+var _scheduler = require("../Scheduler");
+var AsyncScheduler = function(_super) {
+    (0, _tslib.__extends)(AsyncScheduler, _super);
+    function AsyncScheduler(SchedulerAction, now) {
+        if (now === void 0) now = (0, _scheduler.Scheduler).now;
+        var _this = _super.call(this, SchedulerAction, now) || this;
+        _this.actions = [];
+        _this._active = false;
+        return _this;
+    }
+    AsyncScheduler.prototype.flush = function(action) {
+        var actions = this.actions;
+        if (this._active) {
+            actions.push(action);
+            return;
+        }
+        var error;
+        this._active = true;
+        do {
+            if (error = action.execute(action.state, action.delay)) break;
+        }while (action = actions.shift());
+        this._active = false;
+        if (error) {
+            while(action = actions.shift())action.unsubscribe();
+            throw error;
+        }
+    };
+    return AsyncScheduler;
+}((0, _scheduler.Scheduler));
+
+},{"tslib":"lRdW5","../Scheduler":"90yvc","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"90yvc":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Scheduler", ()=>Scheduler);
+var _dateTimestampProvider = require("./scheduler/dateTimestampProvider");
+var Scheduler = function() {
+    function Scheduler(schedulerActionCtor, now) {
+        if (now === void 0) now = Scheduler.now;
+        this.schedulerActionCtor = schedulerActionCtor;
+        this.now = now;
+    }
+    Scheduler.prototype.schedule = function(work, delay, state) {
+        if (delay === void 0) delay = 0;
+        return new this.schedulerActionCtor(this, work).schedule(state, delay);
+    };
+    Scheduler.now = (0, _dateTimestampProvider.dateTimestampProvider).now;
+    return Scheduler;
+}();
+
+},{"./scheduler/dateTimestampProvider":"9VL6k","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9VL6k":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "dateTimestampProvider", ()=>dateTimestampProvider);
+var dateTimestampProvider = {
+    now: function() {
+        return (dateTimestampProvider.delegate || Date).now();
+    },
+    delegate: undefined
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eTJLc":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "fromEvent", ()=>fromEvent);
+var _tslib = require("tslib");
+var _innerFrom = require("../observable/innerFrom");
+var _observable = require("../Observable");
+var _mergeMap = require("../operators/mergeMap");
+var _isArrayLike = require("../util/isArrayLike");
+var _isFunction = require("../util/isFunction");
+var _mapOneOrManyArgs = require("../util/mapOneOrManyArgs");
+var nodeEventEmitterMethods = [
+    "addListener",
+    "removeListener"
+];
+var eventTargetMethods = [
+    "addEventListener",
+    "removeEventListener"
+];
+var jqueryMethods = [
+    "on",
+    "off"
+];
+function fromEvent(target, eventName, options, resultSelector) {
+    if ((0, _isFunction.isFunction)(options)) {
+        resultSelector = options;
+        options = undefined;
+    }
+    if (resultSelector) return fromEvent(target, eventName, options).pipe((0, _mapOneOrManyArgs.mapOneOrManyArgs)(resultSelector));
+    var _a = (0, _tslib.__read)(isEventTarget(target) ? eventTargetMethods.map(function(methodName) {
+        return function(handler) {
+            return target[methodName](eventName, handler, options);
+        };
+    }) : isNodeStyleEventEmitter(target) ? nodeEventEmitterMethods.map(toCommonHandlerRegistry(target, eventName)) : isJQueryStyleEventEmitter(target) ? jqueryMethods.map(toCommonHandlerRegistry(target, eventName)) : [], 2), add = _a[0], remove = _a[1];
+    if (!add) {
+        if ((0, _isArrayLike.isArrayLike)(target)) return (0, _mergeMap.mergeMap)(function(subTarget) {
+            return fromEvent(subTarget, eventName, options);
+        })((0, _innerFrom.innerFrom)(target));
+    }
+    if (!add) throw new TypeError("Invalid event target");
+    return new (0, _observable.Observable)(function(subscriber) {
+        var handler = function() {
+            var args = [];
+            for(var _i = 0; _i < arguments.length; _i++)args[_i] = arguments[_i];
+            return subscriber.next(1 < args.length ? args : args[0]);
+        };
+        add(handler);
+        return function() {
+            return remove(handler);
+        };
+    });
+}
+function toCommonHandlerRegistry(target, eventName) {
+    return function(methodName) {
+        return function(handler) {
+            return target[methodName](eventName, handler);
+        };
+    };
+}
+function isNodeStyleEventEmitter(target) {
+    return (0, _isFunction.isFunction)(target.addListener) && (0, _isFunction.isFunction)(target.removeListener);
+}
+function isJQueryStyleEventEmitter(target) {
+    return (0, _isFunction.isFunction)(target.on) && (0, _isFunction.isFunction)(target.off);
+}
+function isEventTarget(target) {
+    return (0, _isFunction.isFunction)(target.addEventListener) && (0, _isFunction.isFunction)(target.removeEventListener);
+}
+
+},{"tslib":"lRdW5","../observable/innerFrom":"27e4p","../Observable":"4Jvxr","../operators/mergeMap":"1Kzmb","../util/isArrayLike":"i81jv","../util/isFunction":"dEyyK","../util/mapOneOrManyArgs":"hlLvg","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"27e4p":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "innerFrom", ()=>innerFrom);
+parcelHelpers.export(exports, "fromInteropObservable", ()=>fromInteropObservable);
+parcelHelpers.export(exports, "fromArrayLike", ()=>fromArrayLike);
+parcelHelpers.export(exports, "fromPromise", ()=>fromPromise);
+parcelHelpers.export(exports, "fromIterable", ()=>fromIterable);
+parcelHelpers.export(exports, "fromAsyncIterable", ()=>fromAsyncIterable);
+parcelHelpers.export(exports, "fromReadableStreamLike", ()=>fromReadableStreamLike);
+var _tslib = require("tslib");
+var _isArrayLike = require("../util/isArrayLike");
+var _isPromise = require("../util/isPromise");
+var _observable = require("../Observable");
+var _isInteropObservable = require("../util/isInteropObservable");
+var _isAsyncIterable = require("../util/isAsyncIterable");
+var _throwUnobservableError = require("../util/throwUnobservableError");
+var _isIterable = require("../util/isIterable");
+var _isReadableStreamLike = require("../util/isReadableStreamLike");
+var _isFunction = require("../util/isFunction");
+var _reportUnhandledError = require("../util/reportUnhandledError");
+var _observable1 = require("../symbol/observable");
+function innerFrom(input) {
+    if (input instanceof (0, _observable.Observable)) return input;
+    if (input != null) {
+        if ((0, _isInteropObservable.isInteropObservable)(input)) return fromInteropObservable(input);
+        if ((0, _isArrayLike.isArrayLike)(input)) return fromArrayLike(input);
+        if ((0, _isPromise.isPromise)(input)) return fromPromise(input);
+        if ((0, _isAsyncIterable.isAsyncIterable)(input)) return fromAsyncIterable(input);
+        if ((0, _isIterable.isIterable)(input)) return fromIterable(input);
+        if ((0, _isReadableStreamLike.isReadableStreamLike)(input)) return fromReadableStreamLike(input);
+    }
+    throw (0, _throwUnobservableError.createInvalidObservableTypeError)(input);
+}
+function fromInteropObservable(obj) {
+    return new (0, _observable.Observable)(function(subscriber) {
+        var obs = obj[0, _observable1.observable]();
+        if ((0, _isFunction.isFunction)(obs.subscribe)) return obs.subscribe(subscriber);
+        throw new TypeError("Provided object does not correctly implement Symbol.observable");
+    });
+}
+function fromArrayLike(array) {
+    return new (0, _observable.Observable)(function(subscriber) {
+        for(var i = 0; i < array.length && !subscriber.closed; i++)subscriber.next(array[i]);
+        subscriber.complete();
+    });
+}
+function fromPromise(promise) {
+    return new (0, _observable.Observable)(function(subscriber) {
+        promise.then(function(value) {
+            if (!subscriber.closed) {
+                subscriber.next(value);
+                subscriber.complete();
+            }
+        }, function(err) {
+            return subscriber.error(err);
+        }).then(null, (0, _reportUnhandledError.reportUnhandledError));
+    });
+}
+function fromIterable(iterable) {
+    return new (0, _observable.Observable)(function(subscriber) {
+        var e_1, _a;
+        try {
+            for(var iterable_1 = (0, _tslib.__values)(iterable), iterable_1_1 = iterable_1.next(); !iterable_1_1.done; iterable_1_1 = iterable_1.next()){
+                var value = iterable_1_1.value;
+                subscriber.next(value);
+                if (subscriber.closed) return;
+            }
+        } catch (e_1_1) {
+            e_1 = {
+                error: e_1_1
+            };
+        } finally{
+            try {
+                if (iterable_1_1 && !iterable_1_1.done && (_a = iterable_1.return)) _a.call(iterable_1);
+            } finally{
+                if (e_1) throw e_1.error;
+            }
+        }
+        subscriber.complete();
+    });
+}
+function fromAsyncIterable(asyncIterable) {
+    return new (0, _observable.Observable)(function(subscriber) {
+        process(asyncIterable, subscriber).catch(function(err) {
+            return subscriber.error(err);
+        });
+    });
+}
+function fromReadableStreamLike(readableStream) {
+    return fromAsyncIterable((0, _isReadableStreamLike.readableStreamLikeToAsyncGenerator)(readableStream));
+}
+function process(asyncIterable, subscriber) {
+    var asyncIterable_1, asyncIterable_1_1;
+    var e_2, _a;
+    return (0, _tslib.__awaiter)(this, void 0, void 0, function() {
+        var value, e_2_1;
+        return (0, _tslib.__generator)(this, function(_b) {
+            switch(_b.label){
+                case 0:
+                    _b.trys.push([
+                        0,
+                        5,
+                        6,
+                        11
+                    ]);
+                    asyncIterable_1 = (0, _tslib.__asyncValues)(asyncIterable);
+                    _b.label = 1;
+                case 1:
+                    return [
+                        4,
+                        asyncIterable_1.next()
+                    ];
+                case 2:
+                    if (!(asyncIterable_1_1 = _b.sent(), !asyncIterable_1_1.done)) return [
+                        3,
+                        4
+                    ];
+                    value = asyncIterable_1_1.value;
+                    subscriber.next(value);
+                    if (subscriber.closed) return [
+                        2
+                    ];
+                    _b.label = 3;
+                case 3:
+                    return [
+                        3,
+                        1
+                    ];
+                case 4:
+                    return [
+                        3,
+                        11
+                    ];
+                case 5:
+                    e_2_1 = _b.sent();
+                    e_2 = {
+                        error: e_2_1
+                    };
+                    return [
+                        3,
+                        11
+                    ];
+                case 6:
+                    _b.trys.push([
+                        6,
+                        ,
+                        9,
+                        10
+                    ]);
+                    if (!(asyncIterable_1_1 && !asyncIterable_1_1.done && (_a = asyncIterable_1.return))) return [
+                        3,
+                        8
+                    ];
+                    return [
+                        4,
+                        _a.call(asyncIterable_1)
+                    ];
+                case 7:
+                    _b.sent();
+                    _b.label = 8;
+                case 8:
+                    return [
+                        3,
+                        10
+                    ];
+                case 9:
+                    if (e_2) throw e_2.error;
+                    return [
+                        7
+                    ];
+                case 10:
+                    return [
+                        7
+                    ];
+                case 11:
+                    subscriber.complete();
+                    return [
+                        2
+                    ];
+            }
+        });
+    });
+}
+
+},{"tslib":"lRdW5","../util/isArrayLike":"i81jv","../util/isPromise":"aVkee","../Observable":"4Jvxr","../util/isInteropObservable":"7Yp6b","../util/isAsyncIterable":"fuDY5","../util/throwUnobservableError":"Il45E","../util/isIterable":"cGlpL","../util/isReadableStreamLike":"bnSKo","../util/isFunction":"dEyyK","../util/reportUnhandledError":"aVM3K","../symbol/observable":"byHtV","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"i81jv":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "isArrayLike", ()=>isArrayLike);
+var isArrayLike = function(x) {
+    return x && typeof x.length === "number" && typeof x !== "function";
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"aVkee":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "isPromise", ()=>isPromise);
+var _isFunction = require("./isFunction");
+function isPromise(value) {
+    return (0, _isFunction.isFunction)(value === null || value === void 0 ? void 0 : value.then);
+}
+
+},{"./isFunction":"dEyyK","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7Yp6b":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "isInteropObservable", ()=>isInteropObservable);
+var _observable = require("../symbol/observable");
+var _isFunction = require("./isFunction");
+function isInteropObservable(input) {
+    return (0, _isFunction.isFunction)(input[0, _observable.observable]);
+}
+
+},{"../symbol/observable":"byHtV","./isFunction":"dEyyK","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fuDY5":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "isAsyncIterable", ()=>isAsyncIterable);
+var _isFunction = require("./isFunction");
+function isAsyncIterable(obj) {
+    return Symbol.asyncIterator && (0, _isFunction.isFunction)(obj === null || obj === void 0 ? void 0 : obj[Symbol.asyncIterator]);
+}
+
+},{"./isFunction":"dEyyK","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"Il45E":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "createInvalidObservableTypeError", ()=>createInvalidObservableTypeError);
+function createInvalidObservableTypeError(input) {
+    return new TypeError("You provided " + (input !== null && typeof input === "object" ? "an invalid object" : "'" + input + "'") + " where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.");
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cGlpL":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "isIterable", ()=>isIterable);
+var _iterator = require("../symbol/iterator");
+var _isFunction = require("./isFunction");
+function isIterable(input) {
+    return (0, _isFunction.isFunction)(input === null || input === void 0 ? void 0 : input[0, _iterator.iterator]);
+}
+
+},{"../symbol/iterator":"l85ff","./isFunction":"dEyyK","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"l85ff":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "getSymbolIterator", ()=>getSymbolIterator);
+parcelHelpers.export(exports, "iterator", ()=>iterator);
+function getSymbolIterator() {
+    if (typeof Symbol !== "function" || !Symbol.iterator) return "@@iterator";
+    return Symbol.iterator;
+}
+var iterator = getSymbolIterator();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bnSKo":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "readableStreamLikeToAsyncGenerator", ()=>readableStreamLikeToAsyncGenerator);
+parcelHelpers.export(exports, "isReadableStreamLike", ()=>isReadableStreamLike);
+var _tslib = require("tslib");
+var _isFunction = require("./isFunction");
+function readableStreamLikeToAsyncGenerator(readableStream) {
+    return (0, _tslib.__asyncGenerator)(this, arguments, function readableStreamLikeToAsyncGenerator_1() {
+        var reader, _a, value, done;
+        return (0, _tslib.__generator)(this, function(_b) {
+            switch(_b.label){
+                case 0:
+                    reader = readableStream.getReader();
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([
+                        1,
+                        ,
+                        9,
+                        10
+                    ]);
+                    _b.label = 2;
+                case 2:
+                    return [
+                        4,
+                        (0, _tslib.__await)(reader.read())
+                    ];
+                case 3:
+                    _a = _b.sent(), value = _a.value, done = _a.done;
+                    if (!done) return [
+                        3,
+                        5
+                    ];
+                    return [
+                        4,
+                        (0, _tslib.__await)(void 0)
+                    ];
+                case 4:
+                    return [
+                        2,
+                        _b.sent()
+                    ];
+                case 5:
+                    return [
+                        4,
+                        (0, _tslib.__await)(value)
+                    ];
+                case 6:
+                    return [
+                        4,
+                        _b.sent()
+                    ];
+                case 7:
+                    _b.sent();
+                    return [
+                        3,
+                        2
+                    ];
+                case 8:
+                    return [
+                        3,
+                        10
+                    ];
+                case 9:
+                    reader.releaseLock();
+                    return [
+                        7
+                    ];
+                case 10:
+                    return [
+                        2
+                    ];
+            }
+        });
+    });
+}
+function isReadableStreamLike(obj) {
+    return (0, _isFunction.isFunction)(obj === null || obj === void 0 ? void 0 : obj.getReader);
+}
+
+},{"tslib":"lRdW5","./isFunction":"dEyyK","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1Kzmb":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "mergeMap", ()=>mergeMap);
+var _map = require("./map");
+var _innerFrom = require("../observable/innerFrom");
+var _lift = require("../util/lift");
+var _mergeInternals = require("./mergeInternals");
+var _isFunction = require("../util/isFunction");
+function mergeMap(project, resultSelector, concurrent) {
+    if (concurrent === void 0) concurrent = Infinity;
+    if ((0, _isFunction.isFunction)(resultSelector)) return mergeMap(function(a, i) {
+        return (0, _map.map)(function(b, ii) {
+            return resultSelector(a, b, i, ii);
+        })((0, _innerFrom.innerFrom)(project(a, i)));
+    }, concurrent);
+    else if (typeof resultSelector === "number") concurrent = resultSelector;
+    return (0, _lift.operate)(function(source, subscriber) {
+        return (0, _mergeInternals.mergeInternals)(source, subscriber, project, concurrent);
+    });
+}
+
+},{"./map":"25iUP","../observable/innerFrom":"27e4p","../util/lift":"7CiSs","./mergeInternals":"izBBV","../util/isFunction":"dEyyK","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"25iUP":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "map", ()=>map);
+var _lift = require("../util/lift");
+var _operatorSubscriber = require("./OperatorSubscriber");
+function map(project, thisArg) {
+    return (0, _lift.operate)(function(source, subscriber) {
+        var index = 0;
+        source.subscribe((0, _operatorSubscriber.createOperatorSubscriber)(subscriber, function(value) {
+            subscriber.next(project.call(thisArg, value, index++));
+        }));
+    });
+}
+
+},{"../util/lift":"7CiSs","./OperatorSubscriber":"96z9b","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7CiSs":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "hasLift", ()=>hasLift);
+parcelHelpers.export(exports, "operate", ()=>operate);
+var _isFunction = require("./isFunction");
+function hasLift(source) {
+    return (0, _isFunction.isFunction)(source === null || source === void 0 ? void 0 : source.lift);
+}
+function operate(init) {
+    return function(source) {
+        if (hasLift(source)) return source.lift(function(liftedSource) {
+            try {
+                return init(liftedSource, this);
+            } catch (err) {
+                this.error(err);
+            }
+        });
+        throw new TypeError("Unable to lift unknown Observable type");
+    };
+}
+
+},{"./isFunction":"dEyyK","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"96z9b":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "createOperatorSubscriber", ()=>createOperatorSubscriber);
+parcelHelpers.export(exports, "OperatorSubscriber", ()=>OperatorSubscriber);
+var _tslib = require("tslib");
+var _subscriber = require("../Subscriber");
+function createOperatorSubscriber(destination, onNext, onComplete, onError, onFinalize) {
+    return new OperatorSubscriber(destination, onNext, onComplete, onError, onFinalize);
+}
+var OperatorSubscriber = function(_super) {
+    (0, _tslib.__extends)(OperatorSubscriber, _super);
+    function OperatorSubscriber(destination, onNext, onComplete, onError, onFinalize, shouldUnsubscribe) {
+        var _this = _super.call(this, destination) || this;
+        _this.onFinalize = onFinalize;
+        _this.shouldUnsubscribe = shouldUnsubscribe;
+        _this._next = onNext ? function(value) {
+            try {
+                onNext(value);
+            } catch (err) {
+                destination.error(err);
+            }
+        } : _super.prototype._next;
+        _this._error = onError ? function(err) {
+            try {
+                onError(err);
+            } catch (err1) {
+                destination.error(err1);
+            } finally{
+                this.unsubscribe();
+            }
+        } : _super.prototype._error;
+        _this._complete = onComplete ? function() {
+            try {
+                onComplete();
+            } catch (err) {
+                destination.error(err);
+            } finally{
+                this.unsubscribe();
+            }
+        } : _super.prototype._complete;
+        return _this;
+    }
+    OperatorSubscriber.prototype.unsubscribe = function() {
+        var _a;
+        if (!this.shouldUnsubscribe || this.shouldUnsubscribe()) {
+            var closed_1 = this.closed;
+            _super.prototype.unsubscribe.call(this);
+            !closed_1 && ((_a = this.onFinalize) === null || _a === void 0 || _a.call(this));
+        }
+    };
+    return OperatorSubscriber;
+}((0, _subscriber.Subscriber));
+
+},{"tslib":"lRdW5","../Subscriber":"1VFFQ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"izBBV":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "mergeInternals", ()=>mergeInternals);
+var _innerFrom = require("../observable/innerFrom");
+var _executeSchedule = require("../util/executeSchedule");
+var _operatorSubscriber = require("./OperatorSubscriber");
+function mergeInternals(source, subscriber, project, concurrent, onBeforeNext, expand, innerSubScheduler, additionalFinalizer) {
+    var buffer = [];
+    var active = 0;
+    var index = 0;
+    var isComplete = false;
+    var checkComplete = function() {
+        if (isComplete && !buffer.length && !active) subscriber.complete();
+    };
+    var outerNext = function(value) {
+        return active < concurrent ? doInnerSub(value) : buffer.push(value);
+    };
+    var doInnerSub = function(value) {
+        expand && subscriber.next(value);
+        active++;
+        var innerComplete = false;
+        (0, _innerFrom.innerFrom)(project(value, index++)).subscribe((0, _operatorSubscriber.createOperatorSubscriber)(subscriber, function(innerValue) {
+            onBeforeNext === null || onBeforeNext === void 0 || onBeforeNext(innerValue);
+            if (expand) outerNext(innerValue);
+            else subscriber.next(innerValue);
+        }, function() {
+            innerComplete = true;
+        }, undefined, function() {
+            if (innerComplete) try {
+                active--;
+                var _loop_1 = function() {
+                    var bufferedValue = buffer.shift();
+                    if (innerSubScheduler) (0, _executeSchedule.executeSchedule)(subscriber, innerSubScheduler, function() {
+                        return doInnerSub(bufferedValue);
+                    });
+                    else doInnerSub(bufferedValue);
+                };
+                while(buffer.length && active < concurrent)_loop_1();
+                checkComplete();
+            } catch (err) {
+                subscriber.error(err);
+            }
+        }));
+    };
+    source.subscribe((0, _operatorSubscriber.createOperatorSubscriber)(subscriber, outerNext, function() {
+        isComplete = true;
+        checkComplete();
+    }));
+    return function() {
+        additionalFinalizer === null || additionalFinalizer === void 0 || additionalFinalizer();
+    };
+}
+
+},{"../observable/innerFrom":"27e4p","../util/executeSchedule":"lF0MM","./OperatorSubscriber":"96z9b","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lF0MM":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "executeSchedule", ()=>executeSchedule);
+function executeSchedule(parentSubscription, scheduler, work, delay, repeat) {
+    if (delay === void 0) delay = 0;
+    if (repeat === void 0) repeat = false;
+    var scheduleSubscription = scheduler.schedule(function() {
+        work();
+        if (repeat) parentSubscription.add(this.schedule(null, delay));
+        else this.unsubscribe();
+    }, delay);
+    parentSubscription.add(scheduleSubscription);
+    if (!repeat) return scheduleSubscription;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hlLvg":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "mapOneOrManyArgs", ()=>mapOneOrManyArgs);
+var _tslib = require("tslib");
+var _map = require("../operators/map");
+var isArray = Array.isArray;
+function callOrApply(fn, args) {
+    return isArray(args) ? fn.apply(void 0, (0, _tslib.__spreadArray)([], (0, _tslib.__read)(args))) : fn(args);
+}
+function mapOneOrManyArgs(fn) {
+    return (0, _map.map)(function(args) {
+        return callOrApply(fn, args);
+    });
+}
+
+},{"tslib":"lRdW5","../operators/map":"25iUP","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"c58fk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"coNfZ":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kQLcN":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "debounceTime", ()=>debounceTime);
+var _async = require("../scheduler/async");
+var _lift = require("../util/lift");
+var _operatorSubscriber = require("./OperatorSubscriber");
+function debounceTime(dueTime, scheduler) {
+    if (scheduler === void 0) scheduler = (0, _async.asyncScheduler);
+    return (0, _lift.operate)(function(source, subscriber) {
+        var activeTask = null;
+        var lastValue = null;
+        var lastTime = null;
+        var emit = function() {
+            if (activeTask) {
+                activeTask.unsubscribe();
+                activeTask = null;
+                var value = lastValue;
+                lastValue = null;
+                subscriber.next(value);
+            }
+        };
+        function emitWhenIdle() {
+            var targetTime = lastTime + dueTime;
+            var now = scheduler.now();
+            if (now < targetTime) {
+                activeTask = this.schedule(undefined, targetTime - now);
+                subscriber.add(activeTask);
+                return;
+            }
+            emit();
+        }
+        source.subscribe((0, _operatorSubscriber.createOperatorSubscriber)(subscriber, function(value) {
+            lastValue = value;
+            lastTime = scheduler.now();
+            if (!activeTask) {
+                activeTask = scheduler.schedule(emitWhenIdle, dueTime);
+                subscriber.add(activeTask);
+            }
+        }, function() {
+            emit();
+            subscriber.complete();
+        }, undefined, function() {
+            lastValue = activeTask = null;
+        }));
+    });
+}
+
+},{"../scheduler/async":"bKyC1","../util/lift":"7CiSs","./OperatorSubscriber":"96z9b","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jbzg2":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "switchMap", ()=>switchMap);
+var _innerFrom = require("../observable/innerFrom");
+var _lift = require("../util/lift");
+var _operatorSubscriber = require("./OperatorSubscriber");
+function switchMap(project, resultSelector) {
+    return (0, _lift.operate)(function(source, subscriber) {
+        var innerSubscriber = null;
+        var index = 0;
+        var isComplete = false;
+        var checkComplete = function() {
+            return isComplete && !innerSubscriber && subscriber.complete();
+        };
+        source.subscribe((0, _operatorSubscriber.createOperatorSubscriber)(subscriber, function(value) {
+            innerSubscriber === null || innerSubscriber === void 0 || innerSubscriber.unsubscribe();
+            var innerIndex = 0;
+            var outerIndex = index++;
+            (0, _innerFrom.innerFrom)(project(value, outerIndex)).subscribe(innerSubscriber = (0, _operatorSubscriber.createOperatorSubscriber)(subscriber, function(innerValue) {
+                return subscriber.next(resultSelector ? resultSelector(value, innerValue, outerIndex, innerIndex++) : innerValue);
+            }, function() {
+                innerSubscriber = null;
+                checkComplete();
+            }));
+        }, function() {
+            isComplete = true;
+            checkComplete();
+        }));
+    });
+}
+
+},{"../observable/innerFrom":"27e4p","../util/lift":"7CiSs","./OperatorSubscriber":"96z9b","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dVdZH":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "tap", ()=>tap);
+var _isFunction = require("../util/isFunction");
+var _lift = require("../util/lift");
+var _operatorSubscriber = require("./OperatorSubscriber");
+var _identity = require("../util/identity");
+function tap(observerOrNext, error, complete) {
+    var tapObserver = (0, _isFunction.isFunction)(observerOrNext) || error || complete ? {
+        next: observerOrNext,
+        error: error,
+        complete: complete
+    } : observerOrNext;
+    return tapObserver ? (0, _lift.operate)(function(source, subscriber) {
+        var _a;
+        (_a = tapObserver.subscribe) === null || _a === void 0 || _a.call(tapObserver);
+        var isUnsub = true;
+        source.subscribe((0, _operatorSubscriber.createOperatorSubscriber)(subscriber, function(value) {
+            var _a;
+            (_a = tapObserver.next) === null || _a === void 0 || _a.call(tapObserver, value);
+            subscriber.next(value);
+        }, function() {
+            var _a;
+            isUnsub = false;
+            (_a = tapObserver.complete) === null || _a === void 0 || _a.call(tapObserver);
+            subscriber.complete();
+        }, function(err) {
+            var _a;
+            isUnsub = false;
+            (_a = tapObserver.error) === null || _a === void 0 || _a.call(tapObserver, err);
+            subscriber.error(err);
+        }, function() {
+            var _a, _b;
+            if (isUnsub) (_a = tapObserver.unsubscribe) === null || _a === void 0 || _a.call(tapObserver);
+            (_b = tapObserver.finalize) === null || _b === void 0 || _b.call(tapObserver);
+        }));
+    }) : (0, _identity.identity);
+}
+
+},{"../util/isFunction":"dEyyK","../util/lift":"7CiSs","./OperatorSubscriber":"96z9b","../util/identity":"8Xfg6","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"coNfZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ProductService", ()=>ProductService);
+var _generateJs = require("/src/lib/generate.js");
 class ProductService {
     static find(filterText) {
         return new Promise((resolve, reject)=>{
             const data = [
                 {
-                    id: 1,
+                    id: (0, _generateJs.generateUUID)(),
                     name: "iPhone 13",
                     price: 500
                 },
                 {
-                    id: 2,
+                    id: (0, _generateJs.generateUUID)(),
                     name: "iPhone 13 Pro Max",
                     price: 1000
                 },
                 {
-                    id: 3,
+                    id: (0, _generateJs.generateUUID)(),
                     name: "Samsung galaxy A20",
                     price: 100
                 },
                 {
-                    id: 4,
+                    id: (0, _generateJs.generateUUID)(),
                     name: "Samsung galaxy A30",
                     price: 150
                 }
@@ -4579,6 +5617,138 @@ class ProductService {
     }
 }
 
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/src/lib/generate.js":"4fXck"}],"4fXck":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "generateUUID", ()=>generateUUID);
+var _uuid = require("uuid");
+const generateUUID = ()=>{
+    return (0, _uuid.v4)();
+};
+
+},{"uuid":"j4KJi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"j4KJi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "v1", ()=>(0, _v1JsDefault.default));
+parcelHelpers.export(exports, "v3", ()=>(0, _v3JsDefault.default));
+parcelHelpers.export(exports, "v4", ()=>(0, _v4JsDefault.default));
+parcelHelpers.export(exports, "v5", ()=>(0, _v5JsDefault.default));
+parcelHelpers.export(exports, "NIL", ()=>(0, _nilJsDefault.default));
+parcelHelpers.export(exports, "version", ()=>(0, _versionJsDefault.default));
+parcelHelpers.export(exports, "validate", ()=>(0, _validateJsDefault.default));
+parcelHelpers.export(exports, "stringify", ()=>(0, _stringifyJsDefault.default));
+parcelHelpers.export(exports, "parse", ()=>(0, _parseJsDefault.default));
+var _v1Js = require("./v1.js");
+var _v1JsDefault = parcelHelpers.interopDefault(_v1Js);
+var _v3Js = require("./v3.js");
+var _v3JsDefault = parcelHelpers.interopDefault(_v3Js);
+var _v4Js = require("./v4.js");
+var _v4JsDefault = parcelHelpers.interopDefault(_v4Js);
+var _v5Js = require("./v5.js");
+var _v5JsDefault = parcelHelpers.interopDefault(_v5Js);
+var _nilJs = require("./nil.js");
+var _nilJsDefault = parcelHelpers.interopDefault(_nilJs);
+var _versionJs = require("./version.js");
+var _versionJsDefault = parcelHelpers.interopDefault(_versionJs);
+var _validateJs = require("./validate.js");
+var _validateJsDefault = parcelHelpers.interopDefault(_validateJs);
+var _stringifyJs = require("./stringify.js");
+var _stringifyJsDefault = parcelHelpers.interopDefault(_stringifyJs);
+var _parseJs = require("./parse.js");
+var _parseJsDefault = parcelHelpers.interopDefault(_parseJs);
+
+},{"./v1.js":false,"./v3.js":false,"./v4.js":"8zJtu","./v5.js":false,"./nil.js":false,"./version.js":false,"./validate.js":"eHPgI","./stringify.js":"5Y9F1","./parse.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8zJtu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _nativeJs = require("./native.js");
+var _nativeJsDefault = parcelHelpers.interopDefault(_nativeJs);
+var _rngJs = require("./rng.js");
+var _rngJsDefault = parcelHelpers.interopDefault(_rngJs);
+var _stringifyJs = require("./stringify.js");
+function v4(options, buf, offset) {
+    if ((0, _nativeJsDefault.default).randomUUID && !buf && !options) return (0, _nativeJsDefault.default).randomUUID();
+    options = options || {};
+    const rnds = options.random || (options.rng || (0, _rngJsDefault.default))(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+    rnds[6] = rnds[6] & 0x0f | 0x40;
+    rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+    if (buf) {
+        offset = offset || 0;
+        for(let i = 0; i < 16; ++i)buf[offset + i] = rnds[i];
+        return buf;
+    }
+    return (0, _stringifyJs.unsafeStringify)(rnds);
+}
+exports.default = v4;
+
+},{"./native.js":"lYayS","./rng.js":"2psyE","./stringify.js":"5Y9F1","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lYayS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+const randomUUID = typeof crypto !== "undefined" && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+exports.default = {
+    randomUUID
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2psyE":[function(require,module,exports) {
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+let getRandomValues;
+const rnds8 = new Uint8Array(16);
+function rng() {
+    // lazy load so that environments that need to polyfill have a chance to do so
+    if (!getRandomValues) {
+        // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
+        getRandomValues = typeof crypto !== "undefined" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+        if (!getRandomValues) throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
+    }
+    return getRandomValues(rnds8);
+}
+exports.default = rng;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5Y9F1":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "unsafeStringify", ()=>unsafeStringify);
+var _validateJs = require("./validate.js");
+var _validateJsDefault = parcelHelpers.interopDefault(_validateJs);
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */ const byteToHex = [];
+for(let i = 0; i < 256; ++i)byteToHex.push((i + 0x100).toString(16).slice(1));
+function unsafeStringify(arr, offset = 0) {
+    // Note: Be careful editing this code!  It's been tuned for performance
+    // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+    return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + "-" + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + "-" + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + "-" + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + "-" + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
+}
+function stringify(arr, offset = 0) {
+    const uuid = unsafeStringify(arr, offset); // Consistency check for valid UUID.  If this throws, it's likely due to one
+    // of the following:
+    // - One or more input array values don't map to a hex octet (leading to
+    // "undefined" in the uuid)
+    // - Invalid input values for the RFC `version` or `variant` fields
+    if (!(0, _validateJsDefault.default)(uuid)) throw TypeError("Stringified UUID is invalid");
+    return uuid;
+}
+exports.default = stringify;
+
+},{"./validate.js":"eHPgI","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eHPgI":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _regexJs = require("./regex.js");
+var _regexJsDefault = parcelHelpers.interopDefault(_regexJs);
+function validate(uuid) {
+    return typeof uuid === "string" && (0, _regexJsDefault.default).test(uuid);
+}
+exports.default = validate;
+
+},{"./regex.js":"bUa5g","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bUa5g":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+exports.default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"iNVWd":[function(require,module,exports) {
 /* src/product/product-list/index.svelte generated by Svelte v3.55.0 */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -4587,21 +5757,62 @@ var _indexSvelte = require("../product-item/index.svelte");
 var _indexSvelteDefault = parcelHelpers.interopDefault(_indexSvelte);
 var _indexSvelte1 = require("/src/components/button/index.svelte");
 var _indexSvelteDefault1 = parcelHelpers.interopDefault(_indexSvelte1);
+var _indexSvelte2 = require("../edit-product-modal/index.svelte");
+var _indexSvelteDefault2 = parcelHelpers.interopDefault(_indexSvelte2);
+var _svelte = require("svelte");
 function add_css(target) {
     (0, _internal.append_styles)(target, "svelte-1r026r1", ".list.svelte-1r026r1.svelte-1r026r1{display:flex;column-gap:12px;row-gap:12px;flex-wrap:wrap}.table.svelte-1r026r1.svelte-1r026r1{width:100%;border-collapse:collapse}.table.svelte-1r026r1 th.svelte-1r026r1{padding:8px}.table.svelte-1r026r1 td.svelte-1r026r1{padding:4px}");
 }
 function get_each_context_1(ctx, list, i) {
     const child_ctx = ctx.slice();
-    child_ctx[2] = list[i];
-    child_ctx[6] = i;
+    child_ctx[11] = list[i];
+    child_ctx[15] = i;
     return child_ctx;
 }
 function get_each_context(ctx, list, i) {
     const child_ctx = ctx.slice();
-    child_ctx[2] = list[i];
+    child_ctx[11] = list[i];
     return child_ctx;
 }
-// (17:0) {:else}
+// (37:0) {#if showModal}
+function create_if_block_4(ctx) {
+    let editproductmodal;
+    let current;
+    editproductmodal = new (0, _indexSvelteDefault2.default)({
+        props: {
+            form: /*editForm*/ ctx[3]
+        }
+    });
+    editproductmodal.$on("save", /*onSave*/ ctx[6]);
+    editproductmodal.$on("close", /*onCloseModal*/ ctx[7]);
+    return {
+        c () {
+            (0, _internal.create_component)(editproductmodal.$$.fragment);
+        },
+        m (target, anchor) {
+            (0, _internal.mount_component)(editproductmodal, target, anchor);
+            current = true;
+        },
+        p (ctx, dirty) {
+            const editproductmodal_changes = {};
+            if (dirty & /*editForm*/ 8) editproductmodal_changes.form = /*editForm*/ ctx[3];
+            editproductmodal.$set(editproductmodal_changes);
+        },
+        i (local) {
+            if (current) return;
+            (0, _internal.transition_in)(editproductmodal.$$.fragment, local);
+            current = true;
+        },
+        o (local) {
+            (0, _internal.transition_out)(editproductmodal.$$.fragment, local);
+            current = false;
+        },
+        d (detaching) {
+            (0, _internal.destroy_component)(editproductmodal, detaching);
+        }
+    };
+}
+// (49:0) {:else}
 function create_else_block(ctx) {
     let table;
     let thead;
@@ -4665,7 +5876,7 @@ function create_else_block(ctx) {
         }
     };
 }
-// (9:0) {#if listView}
+// (41:0) {#if listView}
 function create_if_block(ctx) {
     let div;
     let show_if = Array.isArray(/*data*/ ctx[0]);
@@ -4717,9 +5928,89 @@ function create_if_block(ctx) {
         }
     };
 }
-// (26:8) {#if Array.isArray(data)}
+// (58:8) {#if Array.isArray(data)}
 function create_if_block_2(ctx) {
     let tbody;
+    let current_block_type_index;
+    let if_block;
+    let current;
+    const if_block_creators = [
+        create_if_block_3,
+        create_else_block_1
+    ];
+    const if_blocks = [];
+    function select_block_type_1(ctx, dirty) {
+        if (/*data*/ ctx[0].length > 0) return 0;
+        return 1;
+    }
+    current_block_type_index = select_block_type_1(ctx, -1);
+    if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    return {
+        c () {
+            tbody = (0, _internal.element)("tbody");
+            if_block.c();
+        },
+        m (target, anchor) {
+            (0, _internal.insert)(target, tbody, anchor);
+            if_blocks[current_block_type_index].m(tbody, null);
+            current = true;
+        },
+        p (ctx, dirty) {
+            let previous_block_index = current_block_type_index;
+            current_block_type_index = select_block_type_1(ctx, dirty);
+            if (current_block_type_index === previous_block_index) if_blocks[current_block_type_index].p(ctx, dirty);
+            else {
+                (0, _internal.group_outros)();
+                (0, _internal.transition_out)(if_blocks[previous_block_index], 1, 1, ()=>{
+                    if_blocks[previous_block_index] = null;
+                });
+                (0, _internal.check_outros)();
+                if_block = if_blocks[current_block_type_index];
+                if (!if_block) {
+                    if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+                    if_block.c();
+                } else if_block.p(ctx, dirty);
+                (0, _internal.transition_in)(if_block, 1);
+                if_block.m(tbody, null);
+            }
+        },
+        i (local) {
+            if (current) return;
+            (0, _internal.transition_in)(if_block);
+            current = true;
+        },
+        o (local) {
+            (0, _internal.transition_out)(if_block);
+            current = false;
+        },
+        d (detaching) {
+            if (detaching) (0, _internal.detach)(tbody);
+            if_blocks[current_block_type_index].d();
+        }
+    };
+}
+// (73:16) {:else}
+function create_else_block_1(ctx) {
+    let tr;
+    return {
+        c () {
+            tr = (0, _internal.element)("tr");
+            tr.innerHTML = `<td colspan="5" class="svelte-1r026r1">No more data</td>`;
+        },
+        m (target, anchor) {
+            (0, _internal.insert)(target, tr, anchor);
+        },
+        p: (0, _internal.noop),
+        i: (0, _internal.noop),
+        o: (0, _internal.noop),
+        d (detaching) {
+            if (detaching) (0, _internal.detach)(tr);
+        }
+    };
+}
+// (60:16) {#if data.length > 0}
+function create_if_block_3(ctx) {
+    let each_1_anchor;
     let current;
     let each_value_1 = /*data*/ ctx[0];
     let each_blocks = [];
@@ -4729,16 +6020,16 @@ function create_if_block_2(ctx) {
         });
     return {
         c () {
-            tbody = (0, _internal.element)("tbody");
             for(let i = 0; i < each_blocks.length; i += 1)each_blocks[i].c();
+            each_1_anchor = (0, _internal.empty)();
         },
         m (target, anchor) {
-            (0, _internal.insert)(target, tbody, anchor);
-            for(let i = 0; i < each_blocks.length; i += 1)each_blocks[i].m(tbody, null);
+            for(let i = 0; i < each_blocks.length; i += 1)each_blocks[i].m(target, anchor);
+            (0, _internal.insert)(target, each_1_anchor, anchor);
             current = true;
         },
         p (ctx, dirty) {
-            if (dirty & /*data*/ 1) {
+            if (dirty & /*onDelete, data, onEdit*/ 49) {
                 each_value_1 = /*data*/ ctx[0];
                 let i;
                 for(i = 0; i < each_value_1.length; i += 1){
@@ -4750,7 +6041,7 @@ function create_if_block_2(ctx) {
                         each_blocks[i] = create_each_block_1(child_ctx);
                         each_blocks[i].c();
                         (0, _internal.transition_in)(each_blocks[i], 1);
-                        each_blocks[i].m(tbody, null);
+                        each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
                     }
                 }
                 (0, _internal.group_outros)();
@@ -4769,28 +6060,28 @@ function create_if_block_2(ctx) {
             current = false;
         },
         d (detaching) {
-            if (detaching) (0, _internal.detach)(tbody);
             (0, _internal.destroy_each)(each_blocks, detaching);
+            if (detaching) (0, _internal.detach)(each_1_anchor);
         }
     };
 }
-// (28:16) {#each data as item, index}
+// (61:20) {#each data as item, index}
 function create_each_block_1(ctx) {
     let tr;
     let td0;
-    let t0_value = /*index*/ ctx[6] + 1 + "";
+    let t0_value = /*index*/ ctx[15] + 1 + "";
     let t0;
     let t1;
     let td1;
-    let t2_value = /*item*/ ctx[2].id + "";
+    let t2_value = /*item*/ ctx[11].id + "";
     let t2;
     let t3;
     let td2;
-    let t4_value = /*item*/ ctx[2].name + "";
+    let t4_value = /*item*/ ctx[11].name + "";
     let t4;
     let t5;
     let td3;
-    let t6_value = /*item*/ ctx[2].price + "";
+    let t6_value = /*item*/ ctx[11].price + "";
     let t6;
     let t7;
     let td4;
@@ -4799,17 +6090,25 @@ function create_each_block_1(ctx) {
     let button1;
     let t9;
     let current;
+    function click_handler() {
+        return /*click_handler*/ ctx[8](/*item*/ ctx[11]);
+    }
     button0 = new (0, _indexSvelteDefault1.default)({
         props: {
             label: "Edit"
         }
     });
+    button0.$on("click", click_handler);
+    function click_handler_1() {
+        return /*click_handler_1*/ ctx[9](/*item*/ ctx[11]);
+    }
     button1 = new (0, _indexSvelteDefault1.default)({
         props: {
             label: "Del",
             style: "color: red;"
         }
     });
+    button1.$on("click", click_handler_1);
     return {
         c () {
             tr = (0, _internal.element)("tr");
@@ -4857,10 +6156,11 @@ function create_each_block_1(ctx) {
             (0, _internal.append)(tr, t9);
             current = true;
         },
-        p (ctx, dirty) {
-            if ((!current || dirty & /*data*/ 1) && t2_value !== (t2_value = /*item*/ ctx[2].id + "")) (0, _internal.set_data)(t2, t2_value);
-            if ((!current || dirty & /*data*/ 1) && t4_value !== (t4_value = /*item*/ ctx[2].name + "")) (0, _internal.set_data)(t4, t4_value);
-            if ((!current || dirty & /*data*/ 1) && t6_value !== (t6_value = /*item*/ ctx[2].price + "")) (0, _internal.set_data)(t6, t6_value);
+        p (new_ctx, dirty) {
+            ctx = new_ctx;
+            if ((!current || dirty & /*data*/ 1) && t2_value !== (t2_value = /*item*/ ctx[11].id + "")) (0, _internal.set_data)(t2, t2_value);
+            if ((!current || dirty & /*data*/ 1) && t4_value !== (t4_value = /*item*/ ctx[11].name + "")) (0, _internal.set_data)(t4, t4_value);
+            if ((!current || dirty & /*data*/ 1) && t6_value !== (t6_value = /*item*/ ctx[11].price + "")) (0, _internal.set_data)(t6, t6_value);
         },
         i (local) {
             if (current) return;
@@ -4880,7 +6180,7 @@ function create_each_block_1(ctx) {
         }
     };
 }
-// (11:8) {#if Array.isArray(data)}
+// (43:8) {#if Array.isArray(data)}
 function create_if_block_1(ctx) {
     let each_1_anchor;
     let current;
@@ -4901,7 +6201,7 @@ function create_if_block_1(ctx) {
             current = true;
         },
         p (ctx, dirty) {
-            if (dirty & /*data*/ 1) {
+            if (dirty & /*data, onEdit, onDelete*/ 49) {
                 each_value = /*data*/ ctx[0];
                 let i;
                 for(i = 0; i < each_value.length; i += 1){
@@ -4937,15 +6237,17 @@ function create_if_block_1(ctx) {
         }
     };
 }
-// (12:12) {#each data as item}
+// (44:12) {#each data as item}
 function create_each_block(ctx) {
     let productitem;
     let current;
     productitem = new (0, _indexSvelteDefault.default)({
         props: {
-            item: /*item*/ ctx[2]
+            item: /*item*/ ctx[11]
         }
     });
+    productitem.$on("edit", /*onEdit*/ ctx[5]);
+    productitem.$on("delete", /*onDelete*/ ctx[4]);
     return {
         c () {
             (0, _internal.create_component)(productitem.$$.fragment);
@@ -4956,7 +6258,7 @@ function create_each_block(ctx) {
         },
         p (ctx, dirty) {
             const productitem_changes = {};
-            if (dirty & /*data*/ 1) productitem_changes.item = /*item*/ ctx[2];
+            if (dirty & /*data*/ 1) productitem_changes.item = /*item*/ ctx[11];
             productitem.$set(productitem_changes);
         },
         i (local) {
@@ -4974,10 +6276,12 @@ function create_each_block(ctx) {
     };
 }
 function create_fragment(ctx) {
+    let t;
     let current_block_type_index;
-    let if_block;
-    let if_block_anchor;
+    let if_block1;
+    let if_block1_anchor;
     let current;
+    let if_block0 = /*showModal*/ ctx[2] && create_if_block_4(ctx);
     const if_block_creators = [
         create_if_block,
         create_else_block
@@ -4988,18 +6292,39 @@ function create_fragment(ctx) {
         return 1;
     }
     current_block_type_index = select_block_type(ctx, -1);
-    if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
     return {
         c () {
-            if_block.c();
-            if_block_anchor = (0, _internal.empty)();
+            if (if_block0) if_block0.c();
+            t = (0, _internal.space)();
+            if_block1.c();
+            if_block1_anchor = (0, _internal.empty)();
         },
         m (target, anchor) {
+            if (if_block0) if_block0.m(target, anchor);
+            (0, _internal.insert)(target, t, anchor);
             if_blocks[current_block_type_index].m(target, anchor);
-            (0, _internal.insert)(target, if_block_anchor, anchor);
+            (0, _internal.insert)(target, if_block1_anchor, anchor);
             current = true;
         },
         p (ctx, [dirty]) {
+            if (/*showModal*/ ctx[2]) {
+                if (if_block0) {
+                    if_block0.p(ctx, dirty);
+                    if (dirty & /*showModal*/ 4) (0, _internal.transition_in)(if_block0, 1);
+                } else {
+                    if_block0 = create_if_block_4(ctx);
+                    if_block0.c();
+                    (0, _internal.transition_in)(if_block0, 1);
+                    if_block0.m(t.parentNode, t);
+                }
+            } else if (if_block0) {
+                (0, _internal.group_outros)();
+                (0, _internal.transition_out)(if_block0, 1, 1, ()=>{
+                    if_block0 = null;
+                });
+                (0, _internal.check_outros)();
+            }
             let previous_block_index = current_block_type_index;
             current_block_type_index = select_block_type(ctx, dirty);
             if (current_block_type_index === previous_block_index) if_blocks[current_block_type_index].p(ctx, dirty);
@@ -5009,40 +6334,75 @@ function create_fragment(ctx) {
                     if_blocks[previous_block_index] = null;
                 });
                 (0, _internal.check_outros)();
-                if_block = if_blocks[current_block_type_index];
-                if (!if_block) {
-                    if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-                    if_block.c();
-                } else if_block.p(ctx, dirty);
-                (0, _internal.transition_in)(if_block, 1);
-                if_block.m(if_block_anchor.parentNode, if_block_anchor);
+                if_block1 = if_blocks[current_block_type_index];
+                if (!if_block1) {
+                    if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+                    if_block1.c();
+                } else if_block1.p(ctx, dirty);
+                (0, _internal.transition_in)(if_block1, 1);
+                if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
             }
         },
         i (local) {
             if (current) return;
-            (0, _internal.transition_in)(if_block);
+            (0, _internal.transition_in)(if_block0);
+            (0, _internal.transition_in)(if_block1);
             current = true;
         },
         o (local) {
-            (0, _internal.transition_out)(if_block);
+            (0, _internal.transition_out)(if_block0);
+            (0, _internal.transition_out)(if_block1);
             current = false;
         },
         d (detaching) {
+            if (if_block0) if_block0.d(detaching);
+            if (detaching) (0, _internal.detach)(t);
             if_blocks[current_block_type_index].d(detaching);
-            if (detaching) (0, _internal.detach)(if_block_anchor);
+            if (detaching) (0, _internal.detach)(if_block1_anchor);
         }
     };
 }
 function instance($$self, $$props, $$invalidate) {
     let { data  } = $$props;
     let { listView =true  } = $$props;
+    const dispatch = (0, _svelte.createEventDispatcher)();
+    let showModal = false;
+    let editForm = {};
+    const onDelete = (event)=>{
+        dispatch("delete", event.detail);
+    };
+    const onEdit = (event)=>{
+        $$invalidate(3, editForm = event.detail);
+        $$invalidate(2, showModal = true);
+    };
+    const onSave = (e)=>{
+        const newForm = e.detail;
+        const foundIndex = data.findIndex((it)=>it.id == newForm.id);
+        if (foundIndex > -1) $$invalidate(0, data[foundIndex] = newForm, data);
+        $$invalidate(2, showModal = false);
+    };
+    const onCloseModal = ()=>$$invalidate(2, showModal = false);
+    const click_handler = (item)=>onEdit({
+            detail: item
+        });
+    const click_handler_1 = (item)=>onDelete({
+            detail: item.id
+        });
     $$self.$$set = ($$props)=>{
         if ("data" in $$props) $$invalidate(0, data = $$props.data);
         if ("listView" in $$props) $$invalidate(1, listView = $$props.listView);
     };
     return [
         data,
-        listView
+        listView,
+        showModal,
+        editForm,
+        onDelete,
+        onEdit,
+        onSave,
+        onCloseModal,
+        click_handler,
+        click_handler_1
     ];
 }
 class Index extends (0, _internal.SvelteComponent) {
@@ -5056,12 +6416,69 @@ class Index extends (0, _internal.SvelteComponent) {
 }
 exports.default = Index;
 
-},{"svelte/internal":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../product-item/index.svelte":"1TA14","/src/components/button/index.svelte":"3KtfU"}],"1TA14":[function(require,module,exports) {
+},{"svelte/internal":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../product-item/index.svelte":"1TA14","/src/components/button/index.svelte":"3KtfU","svelte":"4r74h","../edit-product-modal/index.svelte":"3lpaB"}],"1TA14":[function(require,module,exports) {
 /* src/product/product-item/index.svelte generated by Svelte v3.55.0 */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _internal = require("svelte/internal");
+var _indexSvelte = require("/src/components/button/index.svelte");
+var _indexSvelteDefault = parcelHelpers.interopDefault(_indexSvelte);
+var _svelte = require("svelte");
 function add_css(target) {
-    (0, _internal.append_styles)(target, "svelte-64cz9n", ".card.svelte-64cz9n{border:1px solid gray;border-radius:10px;padding:12px;background:rgb(238, 236, 236);min-width:250px;flex:1}");
+    (0, _internal.append_styles)(target, "svelte-d4nbbg", ".card.svelte-d4nbbg{position:relative;border:1px solid gray;border-radius:10px;padding:12px;background:rgb(238, 236, 236);min-width:250px;flex:1}.floating.svelte-d4nbbg{position:absolute;top:0;right:0;background:rgb(231, 237, 196);display:flex;flex-direction:column;row-gap:4px;padding:6px}");
+}
+// (31:4) {#if showFloating}
+function create_if_block(ctx) {
+    let div;
+    let button0;
+    let t;
+    let button1;
+    let current;
+    button0 = new (0, _indexSvelteDefault.default)({
+        props: {
+            label: "Edit"
+        }
+    });
+    button0.$on("click", /*onEdit*/ ctx[2]);
+    button1 = new (0, _indexSvelteDefault.default)({
+        props: {
+            label: "Del",
+            style: "color: red;"
+        }
+    });
+    button1.$on("click", /*onDelete*/ ctx[3]);
+    return {
+        c () {
+            div = (0, _internal.element)("div");
+            (0, _internal.create_component)(button0.$$.fragment);
+            t = (0, _internal.space)();
+            (0, _internal.create_component)(button1.$$.fragment);
+            (0, _internal.attr)(div, "class", "floating svelte-d4nbbg");
+        },
+        m (target, anchor) {
+            (0, _internal.insert)(target, div, anchor);
+            (0, _internal.mount_component)(button0, div, null);
+            (0, _internal.append)(div, t);
+            (0, _internal.mount_component)(button1, div, null);
+            current = true;
+        },
+        p: (0, _internal.noop),
+        i (local) {
+            if (current) return;
+            (0, _internal.transition_in)(button0.$$.fragment, local);
+            (0, _internal.transition_in)(button1.$$.fragment, local);
+            current = true;
+        },
+        o (local) {
+            (0, _internal.transition_out)(button0.$$.fragment, local);
+            (0, _internal.transition_out)(button1.$$.fragment, local);
+            current = false;
+        },
+        d (detaching) {
+            if (detaching) (0, _internal.detach)(div);
+            (0, _internal.destroy_component)(button0);
+            (0, _internal.destroy_component)(button1);
+        }
+    };
 }
 function create_fragment(ctx) {
     let div3;
@@ -5079,6 +6496,11 @@ function create_fragment(ctx) {
     let t6;
     let t7_value = /*item*/ ctx[0].price + "";
     let t7;
+    let t8;
+    let current;
+    let mounted;
+    let dispose;
+    let if_block = /*showFloating*/ ctx[1] && create_if_block(ctx);
     return {
         c () {
             div3 = (0, _internal.element)("div");
@@ -5093,7 +6515,9 @@ function create_fragment(ctx) {
             div2 = (0, _internal.element)("div");
             t6 = (0, _internal.text)("Price: ");
             t7 = (0, _internal.text)(t7_value);
-            (0, _internal.attr)(div3, "class", "card svelte-64cz9n");
+            t8 = (0, _internal.space)();
+            if (if_block) if_block.c();
+            (0, _internal.attr)(div3, "class", "card svelte-d4nbbg");
         },
         m (target, anchor) {
             (0, _internal.insert)(target, div3, anchor);
@@ -5108,26 +6532,78 @@ function create_fragment(ctx) {
             (0, _internal.append)(div3, div2);
             (0, _internal.append)(div2, t6);
             (0, _internal.append)(div2, t7);
+            (0, _internal.append)(div3, t8);
+            if (if_block) if_block.m(div3, null);
+            current = true;
+            if (!mounted) {
+                dispose = [
+                    (0, _internal.listen)(div3, "mouseenter", /*mouseenter_handler*/ ctx[4]),
+                    (0, _internal.listen)(div3, "mouseleave", /*mouseleave_handler*/ ctx[5])
+                ];
+                mounted = true;
+            }
         },
         p (ctx, [dirty]) {
-            if (dirty & /*item*/ 1 && t1_value !== (t1_value = /*item*/ ctx[0].id + "")) (0, _internal.set_data)(t1, t1_value);
-            if (dirty & /*item*/ 1 && t4_value !== (t4_value = /*item*/ ctx[0].name + "")) (0, _internal.set_data)(t4, t4_value);
-            if (dirty & /*item*/ 1 && t7_value !== (t7_value = /*item*/ ctx[0].price + "")) (0, _internal.set_data)(t7, t7_value);
+            if ((!current || dirty & /*item*/ 1) && t1_value !== (t1_value = /*item*/ ctx[0].id + "")) (0, _internal.set_data)(t1, t1_value);
+            if ((!current || dirty & /*item*/ 1) && t4_value !== (t4_value = /*item*/ ctx[0].name + "")) (0, _internal.set_data)(t4, t4_value);
+            if ((!current || dirty & /*item*/ 1) && t7_value !== (t7_value = /*item*/ ctx[0].price + "")) (0, _internal.set_data)(t7, t7_value);
+            if (/*showFloating*/ ctx[1]) {
+                if (if_block) {
+                    if_block.p(ctx, dirty);
+                    if (dirty & /*showFloating*/ 2) (0, _internal.transition_in)(if_block, 1);
+                } else {
+                    if_block = create_if_block(ctx);
+                    if_block.c();
+                    (0, _internal.transition_in)(if_block, 1);
+                    if_block.m(div3, null);
+                }
+            } else if (if_block) {
+                (0, _internal.group_outros)();
+                (0, _internal.transition_out)(if_block, 1, 1, ()=>{
+                    if_block = null;
+                });
+                (0, _internal.check_outros)();
+            }
         },
-        i: (0, _internal.noop),
-        o: (0, _internal.noop),
+        i (local) {
+            if (current) return;
+            (0, _internal.transition_in)(if_block);
+            current = true;
+        },
+        o (local) {
+            (0, _internal.transition_out)(if_block);
+            current = false;
+        },
         d (detaching) {
             if (detaching) (0, _internal.detach)(div3);
+            if (if_block) if_block.d();
+            mounted = false;
+            (0, _internal.run_all)(dispose);
         }
     };
 }
 function instance($$self, $$props, $$invalidate) {
     let { item  } = $$props;
+    const dispatch = (0, _svelte.createEventDispatcher)();
+    const onEdit = ()=>{
+        dispatch("edit", item);
+    };
+    const onDelete = ()=>{
+        dispatch("delete", item.id);
+    };
+    let showFloating = false;
+    const mouseenter_handler = ()=>$$invalidate(1, showFloating = true);
+    const mouseleave_handler = ()=>$$invalidate(1, showFloating = false);
     $$self.$$set = ($$props)=>{
         if ("item" in $$props) $$invalidate(0, item = $$props.item);
     };
     return [
-        item
+        item,
+        showFloating,
+        onEdit,
+        onDelete,
+        mouseenter_handler,
+        mouseleave_handler
     ];
 }
 class Index extends (0, _internal.SvelteComponent) {
@@ -5140,7 +6616,7 @@ class Index extends (0, _internal.SvelteComponent) {
 }
 exports.default = Index;
 
-},{"svelte/internal":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3KtfU":[function(require,module,exports) {
+},{"svelte/internal":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/src/components/button/index.svelte":"3KtfU","svelte":"4r74h"}],"3KtfU":[function(require,module,exports) {
 /* src/components/button/index.svelte generated by Svelte v3.55.0 */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _internal = require("svelte/internal");
@@ -5218,14 +6694,247 @@ class Index extends (0, _internal.SvelteComponent) {
 }
 exports.default = Index;
 
-},{"svelte/internal":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"GM91j":[function(require,module,exports) {
+},{"svelte/internal":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4r74h":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "SvelteComponent", ()=>(0, _indexMjs.SvelteComponentDev));
+parcelHelpers.export(exports, "SvelteComponentTyped", ()=>(0, _indexMjs.SvelteComponentTyped));
+parcelHelpers.export(exports, "afterUpdate", ()=>(0, _indexMjs.afterUpdate));
+parcelHelpers.export(exports, "beforeUpdate", ()=>(0, _indexMjs.beforeUpdate));
+parcelHelpers.export(exports, "createEventDispatcher", ()=>(0, _indexMjs.createEventDispatcher));
+parcelHelpers.export(exports, "getAllContexts", ()=>(0, _indexMjs.getAllContexts));
+parcelHelpers.export(exports, "getContext", ()=>(0, _indexMjs.getContext));
+parcelHelpers.export(exports, "hasContext", ()=>(0, _indexMjs.hasContext));
+parcelHelpers.export(exports, "onDestroy", ()=>(0, _indexMjs.onDestroy));
+parcelHelpers.export(exports, "onMount", ()=>(0, _indexMjs.onMount));
+parcelHelpers.export(exports, "setContext", ()=>(0, _indexMjs.setContext));
+parcelHelpers.export(exports, "tick", ()=>(0, _indexMjs.tick));
+var _indexMjs = require("./internal/index.mjs");
+
+},{"./internal/index.mjs":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3lpaB":[function(require,module,exports) {
+/* src/product/edit-product-modal/index.svelte generated by Svelte v3.55.0 */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _internal = require("svelte/internal");
+var _indexSvelte = require("/src/components/input-text/index.svelte");
+var _indexSvelteDefault = parcelHelpers.interopDefault(_indexSvelte);
+var _indexSvelte1 = require("/src/components/input-number/index.svelte");
+var _indexSvelteDefault1 = parcelHelpers.interopDefault(_indexSvelte1);
+var _indexSvelte2 = require("/src/components/button/index.svelte");
+var _indexSvelteDefault2 = parcelHelpers.interopDefault(_indexSvelte2);
+var _svelte = require("svelte");
+function add_css(target) {
+    (0, _internal.append_styles)(target, "svelte-446w1e", ".modal.svelte-446w1e{position:fixed;display:flex;align-items:center;margin:0;padding:0;background:rgb(87, 86, 86);opacity:0.99;z-index:999;width:100%;height:100%}.form.svelte-446w1e{width:50%;height:fit-content;margin:0 auto;background:wheat;display:flex;flex-direction:column;justify-content:center;padding:12px;row-gap:12px}.form-content.svelte-446w1e{display:flex;flex-direction:column;row-gap:18px}.button-list.svelte-446w1e{display:flex;justify-content:center;column-gap:12px}");
+}
+function create_fragment(ctx) {
+    let div3;
+    let div2;
+    let div0;
+    let inputtext0;
+    let t0;
+    let inputtext1;
+    let updating_value;
+    let t1;
+    let inputnumber;
+    let updating_value_1;
+    let t2;
+    let div1;
+    let button0;
+    let t3;
+    let button1;
+    let current;
+    inputtext0 = new (0, _indexSvelteDefault.default)({
+        props: {
+            value: /*form*/ ctx[0].id,
+            label: "ID",
+            name: "id",
+            readonly: true
+        }
+    });
+    function inputtext1_value_binding(value) {
+        /*inputtext1_value_binding*/ ctx[4](value);
+    }
+    let inputtext1_props = {
+        label: "Name",
+        name: "name",
+        placeholder: "Enter product name"
+    };
+    if (/*form*/ ctx[0].name !== void 0) inputtext1_props.value = /*form*/ ctx[0].name;
+    inputtext1 = new (0, _indexSvelteDefault.default)({
+        props: inputtext1_props
+    });
+    (0, _internal.binding_callbacks).push(()=>(0, _internal.bind)(inputtext1, "value", inputtext1_value_binding, /*form*/ ctx[0].name));
+    /*inputtext1_binding*/ ctx[5](inputtext1);
+    function inputnumber_value_binding(value) {
+        /*inputnumber_value_binding*/ ctx[6](value);
+    }
+    let inputnumber_props = {
+        label: "Price",
+        name: "price",
+        placeholder: "Enter product price"
+    };
+    if (/*form*/ ctx[0].price !== void 0) inputnumber_props.value = /*form*/ ctx[0].price;
+    inputnumber = new (0, _indexSvelteDefault1.default)({
+        props: inputnumber_props
+    });
+    (0, _internal.binding_callbacks).push(()=>(0, _internal.bind)(inputnumber, "value", inputnumber_value_binding, /*form*/ ctx[0].price));
+    button0 = new (0, _indexSvelteDefault2.default)({
+        props: {
+            label: "Save"
+        }
+    });
+    button0.$on("click", /*onSave*/ ctx[2]);
+    button1 = new (0, _indexSvelteDefault2.default)({
+        props: {
+            label: "Close",
+            style: "color: red;"
+        }
+    });
+    button1.$on("click", /*onClose*/ ctx[3]);
+    return {
+        c () {
+            div3 = (0, _internal.element)("div");
+            div2 = (0, _internal.element)("div");
+            div0 = (0, _internal.element)("div");
+            (0, _internal.create_component)(inputtext0.$$.fragment);
+            t0 = (0, _internal.space)();
+            (0, _internal.create_component)(inputtext1.$$.fragment);
+            t1 = (0, _internal.space)();
+            (0, _internal.create_component)(inputnumber.$$.fragment);
+            t2 = (0, _internal.space)();
+            div1 = (0, _internal.element)("div");
+            (0, _internal.create_component)(button0.$$.fragment);
+            t3 = (0, _internal.space)();
+            (0, _internal.create_component)(button1.$$.fragment);
+            (0, _internal.attr)(div0, "class", "form-content svelte-446w1e");
+            (0, _internal.attr)(div1, "class", "button-list svelte-446w1e");
+            (0, _internal.attr)(div2, "class", "form svelte-446w1e");
+            (0, _internal.attr)(div3, "class", "modal svelte-446w1e");
+        },
+        m (target, anchor) {
+            (0, _internal.insert)(target, div3, anchor);
+            (0, _internal.append)(div3, div2);
+            (0, _internal.append)(div2, div0);
+            (0, _internal.mount_component)(inputtext0, div0, null);
+            (0, _internal.append)(div0, t0);
+            (0, _internal.mount_component)(inputtext1, div0, null);
+            (0, _internal.append)(div0, t1);
+            (0, _internal.mount_component)(inputnumber, div0, null);
+            (0, _internal.append)(div2, t2);
+            (0, _internal.append)(div2, div1);
+            (0, _internal.mount_component)(button0, div1, null);
+            (0, _internal.append)(div1, t3);
+            (0, _internal.mount_component)(button1, div1, null);
+            current = true;
+        },
+        p (ctx, [dirty]) {
+            const inputtext0_changes = {};
+            if (dirty & /*form*/ 1) inputtext0_changes.value = /*form*/ ctx[0].id;
+            inputtext0.$set(inputtext0_changes);
+            const inputtext1_changes = {};
+            if (!updating_value && dirty & /*form*/ 1) {
+                updating_value = true;
+                inputtext1_changes.value = /*form*/ ctx[0].name;
+                (0, _internal.add_flush_callback)(()=>updating_value = false);
+            }
+            inputtext1.$set(inputtext1_changes);
+            const inputnumber_changes = {};
+            if (!updating_value_1 && dirty & /*form*/ 1) {
+                updating_value_1 = true;
+                inputnumber_changes.value = /*form*/ ctx[0].price;
+                (0, _internal.add_flush_callback)(()=>updating_value_1 = false);
+            }
+            inputnumber.$set(inputnumber_changes);
+        },
+        i (local) {
+            if (current) return;
+            (0, _internal.transition_in)(inputtext0.$$.fragment, local);
+            (0, _internal.transition_in)(inputtext1.$$.fragment, local);
+            (0, _internal.transition_in)(inputnumber.$$.fragment, local);
+            (0, _internal.transition_in)(button0.$$.fragment, local);
+            (0, _internal.transition_in)(button1.$$.fragment, local);
+            current = true;
+        },
+        o (local) {
+            (0, _internal.transition_out)(inputtext0.$$.fragment, local);
+            (0, _internal.transition_out)(inputtext1.$$.fragment, local);
+            (0, _internal.transition_out)(inputnumber.$$.fragment, local);
+            (0, _internal.transition_out)(button0.$$.fragment, local);
+            (0, _internal.transition_out)(button1.$$.fragment, local);
+            current = false;
+        },
+        d (detaching) {
+            if (detaching) (0, _internal.detach)(div3);
+            (0, _internal.destroy_component)(inputtext0);
+            /*inputtext1_binding*/ ctx[5](null);
+            (0, _internal.destroy_component)(inputtext1);
+            (0, _internal.destroy_component)(inputnumber);
+            (0, _internal.destroy_component)(button0);
+            (0, _internal.destroy_component)(button1);
+        }
+    };
+}
+function instance($$self, $$props, $$invalidate) {
+    let { form  } = $$props;
+    const dispatch = (0, _svelte.createEventDispatcher)();
+    let nameRef;
+    (0, _svelte.onMount)(()=>{
+        nameRef && nameRef.myFocus();
+    });
+    const onSave = ()=>{
+        dispatch("save", form);
+    };
+    const onClose = ()=>{
+        dispatch("close");
+    };
+    function inputtext1_value_binding(value) {
+        if ($$self.$$.not_equal(form.name, value)) {
+            form.name = value;
+            $$invalidate(0, form);
+        }
+    }
+    function inputtext1_binding($$value) {
+        (0, _internal.binding_callbacks)[$$value ? "unshift" : "push"](()=>{
+            nameRef = $$value;
+            $$invalidate(1, nameRef);
+        });
+    }
+    function inputnumber_value_binding(value) {
+        if ($$self.$$.not_equal(form.price, value)) {
+            form.price = value;
+            $$invalidate(0, form);
+        }
+    }
+    $$self.$$set = ($$props)=>{
+        if ("form" in $$props) $$invalidate(0, form = $$props.form);
+    };
+    return [
+        form,
+        nameRef,
+        onSave,
+        onClose,
+        inputtext1_value_binding,
+        inputtext1_binding,
+        inputnumber_value_binding
+    ];
+}
+class Index extends (0, _internal.SvelteComponent) {
+    constructor(options){
+        super();
+        (0, _internal.init)(this, options, instance, create_fragment, (0, _internal.safe_not_equal), {
+            form: 0
+        }, add_css);
+    }
+}
+exports.default = Index;
+
+},{"svelte/internal":"iVhnC","/src/components/input-text/index.svelte":"GM91j","/src/components/input-number/index.svelte":"jhbPA","/src/components/button/index.svelte":"3KtfU","svelte":"4r74h","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"GM91j":[function(require,module,exports) {
 /* src/components/input-text/index.svelte generated by Svelte v3.55.0 */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _internal = require("svelte/internal");
 function add_css(target) {
     (0, _internal.append_styles)(target, "svelte-38b677", ".input-wrapper.svelte-38b677{display:flex;flex-direction:column;row-gap:6px;width:100%}.input.svelte-38b677{width:100%}");
 }
-// (10:4) {#if label}
+// (16:4) {#if label}
 function create_if_block(ctx) {
     let label_1;
     let t;
@@ -5261,6 +6970,7 @@ function create_fragment(ctx) {
             if (if_block) if_block.c();
             t = (0, _internal.space)();
             input = (0, _internal.element)("input");
+            (0, _internal.attr)(input, "name", /*name*/ ctx[2]);
             (0, _internal.attr)(input, "class", "input svelte-38b677");
             (0, _internal.attr)(input, "type", "text");
             (0, _internal.attr)(input, "placeholder", /*placeholder*/ ctx[3]);
@@ -5272,12 +6982,13 @@ function create_fragment(ctx) {
             if (if_block) if_block.m(div, null);
             (0, _internal.append)(div, t);
             (0, _internal.append)(div, input);
+            /*input_binding*/ ctx[10](input);
             (0, _internal.set_input_value)(input, /*value*/ ctx[0]);
             if (!mounted) {
                 dispose = [
-                    (0, _internal.listen)(input, "input", /*input_input_handler*/ ctx[7]),
-                    (0, _internal.listen)(input, "input", /*input_handler*/ ctx[5]),
-                    (0, _internal.listen)(input, "keyup", /*keyup_handler*/ ctx[6])
+                    (0, _internal.listen)(input, "input", /*input_input_handler*/ ctx[11]),
+                    (0, _internal.listen)(input, "input", /*input_handler*/ ctx[8]),
+                    (0, _internal.listen)(input, "keyup", /*keyup_handler*/ ctx[9])
                 ];
                 mounted = true;
             }
@@ -5294,6 +7005,7 @@ function create_fragment(ctx) {
                 if_block.d(1);
                 if_block = null;
             }
+            if (dirty & /*name*/ 4) (0, _internal.attr)(input, "name", /*name*/ ctx[2]);
             if (dirty & /*placeholder*/ 8) (0, _internal.attr)(input, "placeholder", /*placeholder*/ ctx[3]);
             if (dirty & /*readonly*/ 16) input.readOnly = /*readonly*/ ctx[4];
             if (dirty & /*value*/ 1 && input.value !== /*value*/ ctx[0]) (0, _internal.set_input_value)(input, /*value*/ ctx[0]);
@@ -5303,6 +7015,7 @@ function create_fragment(ctx) {
         d (detaching) {
             if (detaching) (0, _internal.detach)(div);
             if (if_block) if_block.d();
+            /*input_binding*/ ctx[10](null);
             mounted = false;
             (0, _internal.run_all)(dispose);
         }
@@ -5314,11 +7027,20 @@ function instance($$self, $$props, $$invalidate) {
     let { name  } = $$props;
     let { placeholder  } = $$props;
     let { readonly  } = $$props;
+    let ref;
+    const myFocus = ()=>ref && ref.focus();
+    const getRef = ()=>ref;
     function input_handler(event) {
         (0, _internal.bubble).call(this, $$self, event);
     }
     function keyup_handler(event) {
         (0, _internal.bubble).call(this, $$self, event);
+    }
+    function input_binding($$value) {
+        (0, _internal.binding_callbacks)[$$value ? "unshift" : "push"](()=>{
+            ref = $$value;
+            $$invalidate(5, ref);
+        });
     }
     function input_input_handler() {
         value = this.value;
@@ -5337,8 +7059,12 @@ function instance($$self, $$props, $$invalidate) {
         name,
         placeholder,
         readonly,
+        ref,
+        myFocus,
+        getRef,
         input_handler,
         keyup_handler,
+        input_binding,
         input_input_handler
     ];
 }
@@ -5350,8 +7076,16 @@ class Index extends (0, _internal.SvelteComponent) {
             value: 0,
             name: 2,
             placeholder: 3,
-            readonly: 4
+            readonly: 4,
+            myFocus: 6,
+            getRef: 7
         }, add_css);
+    }
+    get myFocus() {
+        return this.$$.ctx[6];
+    }
+    get getRef() {
+        return this.$$.ctx[7];
     }
 }
 exports.default = Index;
@@ -5465,6 +7199,236 @@ class Index extends (0, _internal.SvelteComponent) {
 }
 exports.default = Index;
 
-},{"svelte/internal":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["8TtF2","gLLPy"], "gLLPy", "parcelRequirefc40")
+},{"svelte/internal":"iVhnC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hLs7d":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "audit", ()=>(0, _audit.audit));
+parcelHelpers.export(exports, "auditTime", ()=>(0, _auditTime.auditTime));
+parcelHelpers.export(exports, "buffer", ()=>(0, _buffer.buffer));
+parcelHelpers.export(exports, "bufferCount", ()=>(0, _bufferCount.bufferCount));
+parcelHelpers.export(exports, "bufferTime", ()=>(0, _bufferTime.bufferTime));
+parcelHelpers.export(exports, "bufferToggle", ()=>(0, _bufferToggle.bufferToggle));
+parcelHelpers.export(exports, "bufferWhen", ()=>(0, _bufferWhen.bufferWhen));
+parcelHelpers.export(exports, "catchError", ()=>(0, _catchError.catchError));
+parcelHelpers.export(exports, "combineAll", ()=>(0, _combineAll.combineAll));
+parcelHelpers.export(exports, "combineLatestAll", ()=>(0, _combineLatestAll.combineLatestAll));
+parcelHelpers.export(exports, "combineLatest", ()=>(0, _combineLatest.combineLatest));
+parcelHelpers.export(exports, "combineLatestWith", ()=>(0, _combineLatestWith.combineLatestWith));
+parcelHelpers.export(exports, "concat", ()=>(0, _concat.concat));
+parcelHelpers.export(exports, "concatAll", ()=>(0, _concatAll.concatAll));
+parcelHelpers.export(exports, "concatMap", ()=>(0, _concatMap.concatMap));
+parcelHelpers.export(exports, "concatMapTo", ()=>(0, _concatMapTo.concatMapTo));
+parcelHelpers.export(exports, "concatWith", ()=>(0, _concatWith.concatWith));
+parcelHelpers.export(exports, "connect", ()=>(0, _connect.connect));
+parcelHelpers.export(exports, "count", ()=>(0, _count.count));
+parcelHelpers.export(exports, "debounce", ()=>(0, _debounce.debounce));
+parcelHelpers.export(exports, "debounceTime", ()=>(0, _debounceTime.debounceTime));
+parcelHelpers.export(exports, "defaultIfEmpty", ()=>(0, _defaultIfEmpty.defaultIfEmpty));
+parcelHelpers.export(exports, "delay", ()=>(0, _delay.delay));
+parcelHelpers.export(exports, "delayWhen", ()=>(0, _delayWhen.delayWhen));
+parcelHelpers.export(exports, "dematerialize", ()=>(0, _dematerialize.dematerialize));
+parcelHelpers.export(exports, "distinct", ()=>(0, _distinct.distinct));
+parcelHelpers.export(exports, "distinctUntilChanged", ()=>(0, _distinctUntilChanged.distinctUntilChanged));
+parcelHelpers.export(exports, "distinctUntilKeyChanged", ()=>(0, _distinctUntilKeyChanged.distinctUntilKeyChanged));
+parcelHelpers.export(exports, "elementAt", ()=>(0, _elementAt.elementAt));
+parcelHelpers.export(exports, "endWith", ()=>(0, _endWith.endWith));
+parcelHelpers.export(exports, "every", ()=>(0, _every.every));
+parcelHelpers.export(exports, "exhaust", ()=>(0, _exhaust.exhaust));
+parcelHelpers.export(exports, "exhaustAll", ()=>(0, _exhaustAll.exhaustAll));
+parcelHelpers.export(exports, "exhaustMap", ()=>(0, _exhaustMap.exhaustMap));
+parcelHelpers.export(exports, "expand", ()=>(0, _expand.expand));
+parcelHelpers.export(exports, "filter", ()=>(0, _filter.filter));
+parcelHelpers.export(exports, "finalize", ()=>(0, _finalize.finalize));
+parcelHelpers.export(exports, "find", ()=>(0, _find.find));
+parcelHelpers.export(exports, "findIndex", ()=>(0, _findIndex.findIndex));
+parcelHelpers.export(exports, "first", ()=>(0, _first.first));
+parcelHelpers.export(exports, "groupBy", ()=>(0, _groupBy.groupBy));
+parcelHelpers.export(exports, "ignoreElements", ()=>(0, _ignoreElements.ignoreElements));
+parcelHelpers.export(exports, "isEmpty", ()=>(0, _isEmpty.isEmpty));
+parcelHelpers.export(exports, "last", ()=>(0, _last.last));
+parcelHelpers.export(exports, "map", ()=>(0, _map.map));
+parcelHelpers.export(exports, "mapTo", ()=>(0, _mapTo.mapTo));
+parcelHelpers.export(exports, "materialize", ()=>(0, _materialize.materialize));
+parcelHelpers.export(exports, "max", ()=>(0, _max.max));
+parcelHelpers.export(exports, "merge", ()=>(0, _merge.merge));
+parcelHelpers.export(exports, "mergeAll", ()=>(0, _mergeAll.mergeAll));
+parcelHelpers.export(exports, "flatMap", ()=>(0, _flatMap.flatMap));
+parcelHelpers.export(exports, "mergeMap", ()=>(0, _mergeMap.mergeMap));
+parcelHelpers.export(exports, "mergeMapTo", ()=>(0, _mergeMapTo.mergeMapTo));
+parcelHelpers.export(exports, "mergeScan", ()=>(0, _mergeScan.mergeScan));
+parcelHelpers.export(exports, "mergeWith", ()=>(0, _mergeWith.mergeWith));
+parcelHelpers.export(exports, "min", ()=>(0, _min.min));
+parcelHelpers.export(exports, "multicast", ()=>(0, _multicast.multicast));
+parcelHelpers.export(exports, "observeOn", ()=>(0, _observeOn.observeOn));
+parcelHelpers.export(exports, "onErrorResumeNext", ()=>(0, _onErrorResumeNextWith.onErrorResumeNext));
+parcelHelpers.export(exports, "pairwise", ()=>(0, _pairwise.pairwise));
+parcelHelpers.export(exports, "partition", ()=>(0, _partition.partition));
+parcelHelpers.export(exports, "pluck", ()=>(0, _pluck.pluck));
+parcelHelpers.export(exports, "publish", ()=>(0, _publish.publish));
+parcelHelpers.export(exports, "publishBehavior", ()=>(0, _publishBehavior.publishBehavior));
+parcelHelpers.export(exports, "publishLast", ()=>(0, _publishLast.publishLast));
+parcelHelpers.export(exports, "publishReplay", ()=>(0, _publishReplay.publishReplay));
+parcelHelpers.export(exports, "race", ()=>(0, _race.race));
+parcelHelpers.export(exports, "raceWith", ()=>(0, _raceWith.raceWith));
+parcelHelpers.export(exports, "reduce", ()=>(0, _reduce.reduce));
+parcelHelpers.export(exports, "repeat", ()=>(0, _repeat.repeat));
+parcelHelpers.export(exports, "repeatWhen", ()=>(0, _repeatWhen.repeatWhen));
+parcelHelpers.export(exports, "retry", ()=>(0, _retry.retry));
+parcelHelpers.export(exports, "retryWhen", ()=>(0, _retryWhen.retryWhen));
+parcelHelpers.export(exports, "refCount", ()=>(0, _refCount.refCount));
+parcelHelpers.export(exports, "sample", ()=>(0, _sample.sample));
+parcelHelpers.export(exports, "sampleTime", ()=>(0, _sampleTime.sampleTime));
+parcelHelpers.export(exports, "scan", ()=>(0, _scan.scan));
+parcelHelpers.export(exports, "sequenceEqual", ()=>(0, _sequenceEqual.sequenceEqual));
+parcelHelpers.export(exports, "share", ()=>(0, _share.share));
+parcelHelpers.export(exports, "shareReplay", ()=>(0, _shareReplay.shareReplay));
+parcelHelpers.export(exports, "single", ()=>(0, _single.single));
+parcelHelpers.export(exports, "skip", ()=>(0, _skip.skip));
+parcelHelpers.export(exports, "skipLast", ()=>(0, _skipLast.skipLast));
+parcelHelpers.export(exports, "skipUntil", ()=>(0, _skipUntil.skipUntil));
+parcelHelpers.export(exports, "skipWhile", ()=>(0, _skipWhile.skipWhile));
+parcelHelpers.export(exports, "startWith", ()=>(0, _startWith.startWith));
+parcelHelpers.export(exports, "subscribeOn", ()=>(0, _subscribeOn.subscribeOn));
+parcelHelpers.export(exports, "switchAll", ()=>(0, _switchAll.switchAll));
+parcelHelpers.export(exports, "switchMap", ()=>(0, _switchMap.switchMap));
+parcelHelpers.export(exports, "switchMapTo", ()=>(0, _switchMapTo.switchMapTo));
+parcelHelpers.export(exports, "switchScan", ()=>(0, _switchScan.switchScan));
+parcelHelpers.export(exports, "take", ()=>(0, _take.take));
+parcelHelpers.export(exports, "takeLast", ()=>(0, _takeLast.takeLast));
+parcelHelpers.export(exports, "takeUntil", ()=>(0, _takeUntil.takeUntil));
+parcelHelpers.export(exports, "takeWhile", ()=>(0, _takeWhile.takeWhile));
+parcelHelpers.export(exports, "tap", ()=>(0, _tap.tap));
+parcelHelpers.export(exports, "throttle", ()=>(0, _throttle.throttle));
+parcelHelpers.export(exports, "throttleTime", ()=>(0, _throttleTime.throttleTime));
+parcelHelpers.export(exports, "throwIfEmpty", ()=>(0, _throwIfEmpty.throwIfEmpty));
+parcelHelpers.export(exports, "timeInterval", ()=>(0, _timeInterval.timeInterval));
+parcelHelpers.export(exports, "timeout", ()=>(0, _timeout.timeout));
+parcelHelpers.export(exports, "timeoutWith", ()=>(0, _timeoutWith.timeoutWith));
+parcelHelpers.export(exports, "timestamp", ()=>(0, _timestamp.timestamp));
+parcelHelpers.export(exports, "toArray", ()=>(0, _toArray.toArray));
+parcelHelpers.export(exports, "window", ()=>(0, _window.window));
+parcelHelpers.export(exports, "windowCount", ()=>(0, _windowCount.windowCount));
+parcelHelpers.export(exports, "windowTime", ()=>(0, _windowTime.windowTime));
+parcelHelpers.export(exports, "windowToggle", ()=>(0, _windowToggle.windowToggle));
+parcelHelpers.export(exports, "windowWhen", ()=>(0, _windowWhen.windowWhen));
+parcelHelpers.export(exports, "withLatestFrom", ()=>(0, _withLatestFrom.withLatestFrom));
+parcelHelpers.export(exports, "zip", ()=>(0, _zip.zip));
+parcelHelpers.export(exports, "zipAll", ()=>(0, _zipAll.zipAll));
+parcelHelpers.export(exports, "zipWith", ()=>(0, _zipWith.zipWith));
+var _audit = require("../internal/operators/audit");
+var _auditTime = require("../internal/operators/auditTime");
+var _buffer = require("../internal/operators/buffer");
+var _bufferCount = require("../internal/operators/bufferCount");
+var _bufferTime = require("../internal/operators/bufferTime");
+var _bufferToggle = require("../internal/operators/bufferToggle");
+var _bufferWhen = require("../internal/operators/bufferWhen");
+var _catchError = require("../internal/operators/catchError");
+var _combineAll = require("../internal/operators/combineAll");
+var _combineLatestAll = require("../internal/operators/combineLatestAll");
+var _combineLatest = require("../internal/operators/combineLatest");
+var _combineLatestWith = require("../internal/operators/combineLatestWith");
+var _concat = require("../internal/operators/concat");
+var _concatAll = require("../internal/operators/concatAll");
+var _concatMap = require("../internal/operators/concatMap");
+var _concatMapTo = require("../internal/operators/concatMapTo");
+var _concatWith = require("../internal/operators/concatWith");
+var _connect = require("../internal/operators/connect");
+var _count = require("../internal/operators/count");
+var _debounce = require("../internal/operators/debounce");
+var _debounceTime = require("../internal/operators/debounceTime");
+var _defaultIfEmpty = require("../internal/operators/defaultIfEmpty");
+var _delay = require("../internal/operators/delay");
+var _delayWhen = require("../internal/operators/delayWhen");
+var _dematerialize = require("../internal/operators/dematerialize");
+var _distinct = require("../internal/operators/distinct");
+var _distinctUntilChanged = require("../internal/operators/distinctUntilChanged");
+var _distinctUntilKeyChanged = require("../internal/operators/distinctUntilKeyChanged");
+var _elementAt = require("../internal/operators/elementAt");
+var _endWith = require("../internal/operators/endWith");
+var _every = require("../internal/operators/every");
+var _exhaust = require("../internal/operators/exhaust");
+var _exhaustAll = require("../internal/operators/exhaustAll");
+var _exhaustMap = require("../internal/operators/exhaustMap");
+var _expand = require("../internal/operators/expand");
+var _filter = require("../internal/operators/filter");
+var _finalize = require("../internal/operators/finalize");
+var _find = require("../internal/operators/find");
+var _findIndex = require("../internal/operators/findIndex");
+var _first = require("../internal/operators/first");
+var _groupBy = require("../internal/operators/groupBy");
+var _ignoreElements = require("../internal/operators/ignoreElements");
+var _isEmpty = require("../internal/operators/isEmpty");
+var _last = require("../internal/operators/last");
+var _map = require("../internal/operators/map");
+var _mapTo = require("../internal/operators/mapTo");
+var _materialize = require("../internal/operators/materialize");
+var _max = require("../internal/operators/max");
+var _merge = require("../internal/operators/merge");
+var _mergeAll = require("../internal/operators/mergeAll");
+var _flatMap = require("../internal/operators/flatMap");
+var _mergeMap = require("../internal/operators/mergeMap");
+var _mergeMapTo = require("../internal/operators/mergeMapTo");
+var _mergeScan = require("../internal/operators/mergeScan");
+var _mergeWith = require("../internal/operators/mergeWith");
+var _min = require("../internal/operators/min");
+var _multicast = require("../internal/operators/multicast");
+var _observeOn = require("../internal/operators/observeOn");
+var _onErrorResumeNextWith = require("../internal/operators/onErrorResumeNextWith");
+var _pairwise = require("../internal/operators/pairwise");
+var _partition = require("../internal/operators/partition");
+var _pluck = require("../internal/operators/pluck");
+var _publish = require("../internal/operators/publish");
+var _publishBehavior = require("../internal/operators/publishBehavior");
+var _publishLast = require("../internal/operators/publishLast");
+var _publishReplay = require("../internal/operators/publishReplay");
+var _race = require("../internal/operators/race");
+var _raceWith = require("../internal/operators/raceWith");
+var _reduce = require("../internal/operators/reduce");
+var _repeat = require("../internal/operators/repeat");
+var _repeatWhen = require("../internal/operators/repeatWhen");
+var _retry = require("../internal/operators/retry");
+var _retryWhen = require("../internal/operators/retryWhen");
+var _refCount = require("../internal/operators/refCount");
+var _sample = require("../internal/operators/sample");
+var _sampleTime = require("../internal/operators/sampleTime");
+var _scan = require("../internal/operators/scan");
+var _sequenceEqual = require("../internal/operators/sequenceEqual");
+var _share = require("../internal/operators/share");
+var _shareReplay = require("../internal/operators/shareReplay");
+var _single = require("../internal/operators/single");
+var _skip = require("../internal/operators/skip");
+var _skipLast = require("../internal/operators/skipLast");
+var _skipUntil = require("../internal/operators/skipUntil");
+var _skipWhile = require("../internal/operators/skipWhile");
+var _startWith = require("../internal/operators/startWith");
+var _subscribeOn = require("../internal/operators/subscribeOn");
+var _switchAll = require("../internal/operators/switchAll");
+var _switchMap = require("../internal/operators/switchMap");
+var _switchMapTo = require("../internal/operators/switchMapTo");
+var _switchScan = require("../internal/operators/switchScan");
+var _take = require("../internal/operators/take");
+var _takeLast = require("../internal/operators/takeLast");
+var _takeUntil = require("../internal/operators/takeUntil");
+var _takeWhile = require("../internal/operators/takeWhile");
+var _tap = require("../internal/operators/tap");
+var _throttle = require("../internal/operators/throttle");
+var _throttleTime = require("../internal/operators/throttleTime");
+var _throwIfEmpty = require("../internal/operators/throwIfEmpty");
+var _timeInterval = require("../internal/operators/timeInterval");
+var _timeout = require("../internal/operators/timeout");
+var _timeoutWith = require("../internal/operators/timeoutWith");
+var _timestamp = require("../internal/operators/timestamp");
+var _toArray = require("../internal/operators/toArray");
+var _window = require("../internal/operators/window");
+var _windowCount = require("../internal/operators/windowCount");
+var _windowTime = require("../internal/operators/windowTime");
+var _windowToggle = require("../internal/operators/windowToggle");
+var _windowWhen = require("../internal/operators/windowWhen");
+var _withLatestFrom = require("../internal/operators/withLatestFrom");
+var _zip = require("../internal/operators/zip");
+var _zipAll = require("../internal/operators/zipAll");
+var _zipWith = require("../internal/operators/zipWith");
+
+},{"../internal/operators/audit":false,"../internal/operators/auditTime":false,"../internal/operators/buffer":false,"../internal/operators/bufferCount":false,"../internal/operators/bufferTime":false,"../internal/operators/bufferToggle":false,"../internal/operators/bufferWhen":false,"../internal/operators/catchError":false,"../internal/operators/combineAll":false,"../internal/operators/combineLatestAll":false,"../internal/operators/combineLatest":false,"../internal/operators/combineLatestWith":false,"../internal/operators/concat":false,"../internal/operators/concatAll":false,"../internal/operators/concatMap":false,"../internal/operators/concatMapTo":false,"../internal/operators/concatWith":false,"../internal/operators/connect":false,"../internal/operators/count":false,"../internal/operators/debounce":false,"../internal/operators/debounceTime":"kQLcN","../internal/operators/defaultIfEmpty":false,"../internal/operators/delay":false,"../internal/operators/delayWhen":false,"../internal/operators/dematerialize":false,"../internal/operators/distinct":false,"../internal/operators/distinctUntilChanged":false,"../internal/operators/distinctUntilKeyChanged":false,"../internal/operators/elementAt":false,"../internal/operators/endWith":false,"../internal/operators/every":false,"../internal/operators/exhaust":false,"../internal/operators/exhaustAll":false,"../internal/operators/exhaustMap":false,"../internal/operators/expand":false,"../internal/operators/filter":false,"../internal/operators/finalize":false,"../internal/operators/find":false,"../internal/operators/findIndex":false,"../internal/operators/first":false,"../internal/operators/groupBy":false,"../internal/operators/ignoreElements":false,"../internal/operators/isEmpty":false,"../internal/operators/last":false,"../internal/operators/map":"25iUP","../internal/operators/mapTo":false,"../internal/operators/materialize":false,"../internal/operators/max":false,"../internal/operators/merge":false,"../internal/operators/mergeAll":false,"../internal/operators/flatMap":false,"../internal/operators/mergeMap":"1Kzmb","../internal/operators/mergeMapTo":false,"../internal/operators/mergeScan":false,"../internal/operators/mergeWith":false,"../internal/operators/min":false,"../internal/operators/multicast":false,"../internal/operators/observeOn":false,"../internal/operators/onErrorResumeNextWith":false,"../internal/operators/pairwise":false,"../internal/operators/partition":false,"../internal/operators/pluck":false,"../internal/operators/publish":false,"../internal/operators/publishBehavior":false,"../internal/operators/publishLast":false,"../internal/operators/publishReplay":false,"../internal/operators/race":false,"../internal/operators/raceWith":false,"../internal/operators/reduce":false,"../internal/operators/repeat":false,"../internal/operators/repeatWhen":false,"../internal/operators/retry":false,"../internal/operators/retryWhen":false,"../internal/operators/refCount":false,"../internal/operators/sample":false,"../internal/operators/sampleTime":false,"../internal/operators/scan":false,"../internal/operators/sequenceEqual":false,"../internal/operators/share":false,"../internal/operators/shareReplay":false,"../internal/operators/single":false,"../internal/operators/skip":false,"../internal/operators/skipLast":false,"../internal/operators/skipUntil":false,"../internal/operators/skipWhile":false,"../internal/operators/startWith":false,"../internal/operators/subscribeOn":false,"../internal/operators/switchAll":false,"../internal/operators/switchMap":"jbzg2","../internal/operators/switchMapTo":false,"../internal/operators/switchScan":false,"../internal/operators/take":false,"../internal/operators/takeLast":false,"../internal/operators/takeUntil":false,"../internal/operators/takeWhile":false,"../internal/operators/tap":"dVdZH","../internal/operators/throttle":false,"../internal/operators/throttleTime":false,"../internal/operators/throwIfEmpty":false,"../internal/operators/timeInterval":false,"../internal/operators/timeout":false,"../internal/operators/timeoutWith":false,"../internal/operators/timestamp":false,"../internal/operators/toArray":false,"../internal/operators/window":false,"../internal/operators/windowCount":false,"../internal/operators/windowTime":false,"../internal/operators/windowToggle":false,"../internal/operators/windowWhen":false,"../internal/operators/withLatestFrom":false,"../internal/operators/zip":false,"../internal/operators/zipAll":false,"../internal/operators/zipWith":false,"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["8TtF2","gLLPy"], "gLLPy", "parcelRequirefc40")
 
 //# sourceMappingURL=index.4d6bcbeb.js.map
