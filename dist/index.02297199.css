@@ -1,0 +1,78 @@
+.main.svelte-1brq9sg {
+  width: 50%;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 24px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.form.svelte-1brq9sg {
+  width: 100%;
+  column-gap: 24px;
+  display: flex;
+}
+
+.filter-wrapper.svelte-1brq9sg {
+  width: 100%;
+  align-items: center;
+  column-gap: 12px;
+  display: flex;
+}
+
+.input-wrapper.svelte-38b677 {
+  width: 100%;
+  flex-direction: column;
+  row-gap: 6px;
+  display: flex;
+}
+
+.input.svelte-38b677 {
+  width: 100%;
+}
+
+.input-wrapper.svelte-38b677 {
+  width: 100%;
+  flex-direction: column;
+  row-gap: 6px;
+  display: flex;
+}
+
+.input.svelte-38b677 {
+  width: 100%;
+}
+
+.button.svelte-18ve44u {
+  border-radius: 8px;
+  padding: 4px 12px;
+}
+
+.card.svelte-64cz9n {
+  min-width: 250px;
+  background: #eeecec;
+  border: 1px solid gray;
+  border-radius: 10px;
+  flex: 1;
+  padding: 12px;
+}
+
+.list.svelte-1r026r1.svelte-1r026r1 {
+  flex-wrap: wrap;
+  gap: 12px;
+  display: flex;
+}
+
+.table.svelte-1r026r1.svelte-1r026r1 {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table.svelte-1r026r1 th.svelte-1r026r1 {
+  padding: 8px;
+}
+
+.table.svelte-1r026r1 td.svelte-1r026r1 {
+  padding: 4px;
+}
+
+/*# sourceMappingURL=index.02297199.css.map */
